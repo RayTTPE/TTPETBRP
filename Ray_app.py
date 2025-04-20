@@ -128,8 +128,8 @@ def chat(messages):
             json={
                 "messages": messages,
                 "model": model,
-                "max_token": 100,
-                "temperature": 0.7
+                "max_token": 2000,
+                "temperature": 2
             },
         )
         response.raise_for_status()
