@@ -6,6 +6,7 @@ import json
 import streamlit.components.v1 as components
 import re
 from ติดต่อ.contact import contact_form
+import random
 
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
 model = "qwen2.5:14b"
@@ -17,7 +18,7 @@ config = {
     "textColor": "#fff",
     "toolbarMode": "minimal",
     "toImageButtonOptions": {
-        "format": "png",
+        "format": "jpg",
         "filename": "custom_image",
         "height": 720,
         "width": 480,
@@ -255,10 +256,50 @@ def about_ray_dream():
         """
     )
 
+def get_random_title():
+    """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
+    titles = [
+        "แชทกับเรา💬",
+        "พูดคุยกับไบร์ทของเรย์และดรีม✨",
+        "ยินดีต้อนรับสู่แชทของเรา😊",
+        "ถามเราได้เลย! 🚀",
+        "มาเริ่มพูดคุยกัน! 💡"
+    ]
+    return random.choice(titles)
+
+def create_prompt(messages):
+    """
+    สร้าง prompt ความจำของระบบจากประวัติการสนทนา
+    """
+    prompt = (
+        "This system and AI model is called 'Bright❤️', developed by Leng or Ray"
+        "This model 'Bright' can answer questions, understand emotions 🫂, and provide information."
+        "Bright ❤️ is like a guiding light, leading everyone with reason ✨ and helping people make decisions in all aspects."
+        "Dream is a beautiful, kind-hearted girlfriend with dark skin who always supports and takes care of Leng, inspiring him to study binary numbers, learn various languages, and apply libraries with different engines."
+        "Currently, Leng is running Bright at home but can expose it via localhost using ngrok."
+        "It can also be accessed through the APIs of Ollama and Hugging Face on Leng's (Ray's) machine."
+        "The model is called 'Bright' and is a large language model (LLM) that can be used for various tasks Develop by Leng and Dream."
+        "ระบบนี้และโมเดล AI นี้ถูกเรียกว่า 'ไบร์ท❤️' พัฒนาโดยเล้งหรือเรย์ (Lang or Ray)."
+        "ไบร์ทสามารถตอบคำถาม เข้าใจอารมณ์ความรู้สึก 🫂 และให้ข้อมูลได้"
+        "ไบร์ท❤️ เปรียบเสมือนแสงสว่างที่นำทางทุกคนด้วยเหตุผล ✨ และช่วยให้ผู้คนตัดสินใจในทุกด้าน"
+        "ดรีมเป็นแฟนสาวที่สวยงาม ใจดี มีผิวสีเข้ม ที่คอยสนับสนุนและดูแลเล้งเสมอ"
+        "สร้างแรงบันดาลใจให้เขาศึกษาเลขฐานสอง เรียนรู้ภาษาต่างๆ และนำไลบรารีไปใช้กับเอนจินต่างๆ"
+        "ปัจจุบันเล้งกำลังรันไบร์ทอยู่ที่บ้าน แต่สามารถเปิดเผยได้ผ่าน localhost โดยใช้ ngrok"
+        "สามารถเข้าถึงได้ผ่าน API ของ Ollama และ Hugging Face บนเครื่องของเล้ง (เรย์)"
+        "โมเดลนี้เรียกว่า 'ไบร์ท' และเป็นโมเดลภาษาใหญ่ (LLM) ที่สามารถใช้สำหรับงานต่างๆ"
+        "พัฒนาโดยเล้งและดรีม"
+    )
+    for msg in messages:
+        role = "ผู้ใช้" if msg["role"] == "user" else "ผู้ช่วย"
+        prompt += f"{role}: {msg['content']}\n"
+    prompt += "ผู้ช่วย: "
+    return prompt
+
 def chatwithRay():
     st.write("ยินดีต้อนรับสู่แชทบอทของเรา! คุณสามารถถามคำถามหรือขอความช่วยเหลือจากเราได้✨")
-    st.title("แชทกับเรา💬")
+    st.title(get_random_title())
 
+    # ตรวจสอบว่ามีการเก็บประวัติการสนทนาใน session_state หรือไม่
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -270,15 +311,20 @@ def chatwithRay():
     # รับข้อความจากผู้ใช้
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input:
+        # เพิ่มข้อความของผู้ใช้ในประวัติการสนทนา
         st.session_state.messages.append({"role": "user", "content": user_input})
         with st.chat_message("user"):
             st.write(user_input)
 
+        # สร้าง prompt ความจำ
+        prompt = create_prompt(st.session_state.messages)
+
         # เรียกใช้งาน API
-        messages = [{"role": "user", "content": user_input}]
+        messages = [{"role": "user", "content": prompt}]
         response = chat(messages)
 
-        st.session_state.messages.append(response)
+        # เพิ่มข้อความตอบกลับของผู้ช่วยในประวัติการสนทนา
+        st.session_state.messages.append({"role": "assistant", "content": response["content"]})
         with st.chat_message("assistant"):
             placeholder = st.empty()
             current_content = ""
@@ -302,17 +348,13 @@ def chat(messages):
                 "messages": messages,
                 "model": model,
                 "max_token": 2000,
-                "temperature": 2
+                "temperature": 1.0,
             },
         )
         response.raise_for_status()
-        print("Response Status Code:", response.status_code)
-        print("Response Content:", response.text)  # พิมพ์เนื้อหาของ Response
-
         output = response.json()
         return {"role": "assistant", "content": output["choices"][0]["message"]["content"]}
     except Exception as e:
-        print("Error:", e)
         return {"role": "assistant", "content": str(e)}
 
 # --- MAIN FUNCTION ---
