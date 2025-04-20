@@ -2,11 +2,10 @@ import re
 import streamlit as st
 import requests
 
-WEBHOOK_URL = st.secrets["WEBHOOK_URL"]
+WEBHOOK_URL = "https://connect.pabbly.com/workflow/sendwebhookdata/IjU3NjYwNTY4MDYzNzA0MzQ1MjY0NTUzNjUxMzUi_pc"
 
 
 def is_valid_email(email):
-    # Basic regex pattern for email validation
     email_pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
     return re.match(email_pattern, email) is not None
 
@@ -19,24 +18,24 @@ def contact_form():
 
     if submit_button:
         if not WEBHOOK_URL:
-            st.error("Email service is not set up. Please try again later.", icon="📧")
-            st.stop()
+                st.error("Email service is not set up. Please try again later.", icon="📧")
+                st.stop()
 
         if not name:
-            st.error("Please provide your name.", icon="🧑")
-            st.stop()
+                st.error("Please provide your name.", icon="🧑")
+                st.stop()
 
         if not email:
-            st.error("Please provide your email address.", icon="📨")
-            st.stop()
+                st.error("Please provide your email address.", icon="📨")
+                st.stop()
 
         if not is_valid_email(email):
-            st.error("Please provide a valid email address.", icon="📧")
-            st.stop()
+                st.error("Please provide a valid email address.", icon="📧")
+                st.stop()
 
         if not message:
-            st.error("Please provide a message.", icon="💬")
-            st.stop()
+                st.error("Please provide a message.", icon="💬")
+                st.stop()
 
         # Prepare the data payload and send it to the specified webhook URL
         data = {"email": email, "name": name, "message": message}
