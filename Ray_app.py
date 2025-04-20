@@ -168,9 +168,8 @@ particles_js = """<!DOCTYPE html>
 </body>
 </html>
 """
-st.session_state.show_animation = False
+st.session_state.show_animation = True
 if "has_snowed" not in st.session_state:
-
     st.snow()
     st.session_state["has_snowed"] = True
 if st.session_state.show_animation:
