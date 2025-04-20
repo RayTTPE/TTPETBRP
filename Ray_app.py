@@ -5,7 +5,7 @@ import requests
 import json
 import streamlit.components.v1 as components
 import re
-from forms.contact import contact_form
+from ติดต่อ.contact import contact_form
 
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
 model = "qwen2.5:14b"
