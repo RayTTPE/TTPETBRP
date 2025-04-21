@@ -11,7 +11,6 @@ import re
 from ติดต่อ.contact import contact_form
 import random
 import os
-import pytesseract
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
@@ -393,7 +392,7 @@ def chat(messages):
                 "max_token": 2000,
                 "temperature": 1.2,
                 "top_p": 0.99,
-                "top_k": 60,
+                "top_k": 40,
                 "repetition_penalty": 1.9,
             },
         )
@@ -449,8 +448,51 @@ def main():
         "แชทกับเรา": chatwithRay,
     }
 
-    selected_page = st.sidebar.radio("เมนูนำทาง", list(pages.keys()))
+    selected_page = st.sidebar.radio("สำรวจ", list(pages.keys()))
+    st.sidebar.markdown(
+        """
+        <style>
+        /* เปลี่ยนสีพื้นหลังของ Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: #2E4053;
+            color: white;
+        }
 
+        /* ปรับแต่งข้อความใน Sidebar */
+        [data-testid="stSidebar"] .sidebar-text {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #F7DC6F;
+        }
+
+        /* ปรับแต่งปุ่ม Radio */
+        [data-testid="stSidebar"] .stRadio > label {
+            font-size: 1rem;
+            color: #FFFF00;
+        }
+
+        /* ปรับแต่งรูปภาพใน Sidebar */
+        [data-testid="stSidebar"] img {
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    """,
+        unsafe_allow_html=True,
+        
+    )
+
+    st.sidebar.markdown(
+        """
+        <p class="sidebar-text">สร้างโดยเล้ง ❤️ และดรีม</p>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.sidebar.markdown(
+        """
+        
+        """
+    )
     # Run selected page function
     pages[selected_page]()
 st.sidebar.image("รูป/DR.jpg", width=150)
