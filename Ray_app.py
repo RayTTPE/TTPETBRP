@@ -7,7 +7,9 @@ import streamlit.components.v1 as components
 import re
 from ติดต่อ.contact import contact_form
 import random
-
+import pandas as pd
+import os
+API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
 model = "qwen2.5:14b"
 
@@ -279,6 +281,7 @@ def create_prompt(messages):
         "Currently, Leng is running Bright at home but can expose it via localhost using ngrok."
         "It can also be accessed through the APIs of Ollama and Hugging Face on Leng's (Ray's) machine."
         "The model is called 'Bright' and is a large language model (LLM) that can be used for various tasks Develop by Leng and Dream."
+        "Currently, Bright, which is running on the online system, can read files but cannot perform real-time data retrieval or external connections same time when Leng run in localhost. This limitation arises because Bright, which uses a model to respond through a web-based .json system, is being run on a server through ngrok integrated with Git and VS Code. The library required for this setup needs to be redesigned, which differs significantly from the private version previously used. Due to the structural differences in the code, Leng needs more time to develop and study Bright and its code usage further."
         "ระบบนี้และโมเดล AI นี้ถูกเรียกว่า 'ไบร์ท❤️' พัฒนาโดยเล้งหรือเรย์ (Lang or Ray)."
         "ไบร์ทสามารถตอบคำถาม เข้าใจอารมณ์ความรู้สึก 🫂 และให้ข้อมูลได้"
         "ไบร์ท❤️ เปรียบเสมือนแสงสว่างที่นำทางทุกคนด้วยเหตุผล ✨ และช่วยให้ผู้คนตัดสินใจในทุกด้าน"
@@ -288,6 +291,7 @@ def create_prompt(messages):
         "สามารถเข้าถึงได้ผ่าน API ของ Ollama และ Hugging Face บนเครื่องของเล้ง (เรย์)"
         "โมเดลนี้เรียกว่า 'ไบร์ท' และเป็นโมเดลภาษาใหญ่ (LLM) ที่สามารถใช้สำหรับงานต่างๆ"
         "พัฒนาโดยเล้งและดรีม"
+        "ตอนนี้ไบร์ทที่รันอยู่ในระบบออนไลน์สามารถอ่านไฟล์ได้ แต่ไม่สามารถหาข้อมูลแบบเรียลไทม์หรือการเชื่อมต่อภายนอกแบบที่เคยผ่าน localhost ได้ เนื่องจากข้อจำกัดที่เกิดจากการพัฒนาให้ไบร์ทใช้โมเดลตอบผ่านระบบเว็บ .json โดยการรันเซิร์ฟเวอร์ผ่าน ngrok ที่ผสานกับ Git และ VS Code ไลบรารีที่จำเป็นสำหรับการตั้งค่านี้ต้องถูกออกแบบใหม่ ซึ่งแตกต่างอย่างมากจากเวอร์ชันส่วนตัวที่เคยใช้งาน ด้วยความแตกต่างในโครงสร้างโค้ด เล้งจึงต้องใช้เวลาในการพัฒนาและศึกษาไบร์ทและการใช้งานโค้ดเพิ่มเติม"
     )
     for msg in messages:
         role = "ผู้ใช้" if msg["role"] == "user" else "ผู้ช่วย"
@@ -298,6 +302,38 @@ def create_prompt(messages):
 def chatwithRay():
     st.write("ยินดีต้อนรับสู่แชทบอทของเรา! คุณสามารถถามคำถามหรือขอความช่วยเหลือจากเราได้✨")
     st.title(get_random_title())
+    
+    # อัปโหลดไฟล์
+    upload_file = st.file_uploader("อัปโหลดไฟล์", type=["txt", "pdf", "docx", "jpg", "png"], label_visibility="collapsed")
+    content = ""
+    
+    if upload_file is not None:
+        # อ่านไฟล์ที่อัปโหลด
+        file_type = upload_file.type
+        if file_type == "text/plain":
+            content = upload_file.read().decode("utf-8")
+        elif file_type == "application/pdf":
+            import PyPDF2
+            pdf_reader = PyPDF2.PdfReader(upload_file)
+            for page in pdf_reader.pages:
+                content += page.extract_text()
+        elif file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            import docx
+            doc = docx.Document(upload_file)
+            content = "\n".join([para.text for para in doc.paragraphs])
+        elif file_type in ["image/jpeg", "image/png"]:
+            from PIL import Image
+            import pytesseract
+            img = Image.open(upload_file)
+            content = pytesseract.image_to_string(img)
+            st.image(img, caption=upload_file.name, use_column_width=True)
+        else:
+            st.error("ประเภทไฟล์ไม่รองรับ")
+            return
+
+        # แสดงเนื้อหาของไฟล์ที่อัปโหลด
+        st.subheader("เนื้อหาของไฟล์ที่อัปโหลด:")
+        st.text_area("เนื้อหา", content, height=300)
 
     # ตรวจสอบว่ามีการเก็บประวัติการสนทนาใน session_state หรือไม่
     if "messages" not in st.session_state:
@@ -307,17 +343,20 @@ def chatwithRay():
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
             st.write(msg["content"])
-
+    
     # รับข้อความจากผู้ใช้
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
-    if user_input:
+    if user_input or content:
         # เพิ่มข้อความของผู้ใช้ในประวัติการสนทนา
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user"):
-            st.write(user_input)
+        if user_input:
+            st.session_state.messages.append({"role": "user", "content": user_input})
+            with st.chat_message("user"):
+                st.write(user_input)
 
         # สร้าง prompt ความจำ
         prompt = create_prompt(st.session_state.messages)
+        if content:
+            prompt += f"\nเนื้อหาจากไฟล์:\n{content}\n"
 
         # เรียกใช้งาน API
         messages = [{"role": "user", "content": prompt}]
@@ -348,7 +387,10 @@ def chat(messages):
                 "messages": messages,
                 "model": model,
                 "max_token": 2000,
-                "temperature": 1.0,
+                "temperature": 1.2,
+                "top_p": 0.99,
+                "top_k": 40,
+                "repetition_penalty": 1.9,
             },
         )
         response.raise_for_status()
@@ -356,6 +398,7 @@ def chat(messages):
         return {"role": "assistant", "content": output["choices"][0]["message"]["content"]}
     except Exception as e:
         return {"role": "assistant", "content": str(e)}
+        
 
 # --- MAIN FUNCTION ---
 def main():
