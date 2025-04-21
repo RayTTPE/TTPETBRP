@@ -1,17 +1,18 @@
 import streamlit as st
-import streamlit as st
-import sqlite3
+import pandas as pd
+from PIL import Image
 import requests
+import PyPDF2
+import docx
+import sqlite3
 import json
 import streamlit.components.v1 as components
 import re
 from ติดต่อ.contact import contact_form
 import random
-import pandas as pd
 import os
 import pytesseract
-import PyPDF2
-import docx
+
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
 model = "qwen2.5:14b"
@@ -323,10 +324,11 @@ def chatwithRay():
             doc = docx.Document(upload_file)
             content = "\n".join([para.text for para in doc.paragraphs])
         elif file_type in ["image/jpeg", "image/png"]:
-            from PIL import Image
-            img = Image.open(upload_file)
-            content = pytesseract.image_to_string(img)
-            st.image(img, caption=upload_file.name, use_column_width=True)
+            img_path = f"/tmp/{upload_file.name}"
+            with open(img_path, "wb") as f:
+                f.write(upload_file.getbuffer())
+            content = extract_text_from_image(img_path)
+            st.image(img_path, caption=upload_file.name, use_column_width=True)
         else:
             st.error("ประเภทไฟล์ไม่รองรับ")
             return
@@ -398,7 +400,43 @@ def chat(messages):
         return {"role": "assistant", "content": output["choices"][0]["message"]["content"]}
     except Exception as e:
         return {"role": "assistant", "content": str(e)}
-        
+
+# ฟังก์ชันสำหรับดึงข้อความจากรูปภาพ
+def extract_text_from_image(image_file):
+    """ใช้ OCR API เพื่อดึงข้อความจากรูปภาพ"""
+    api_url = "https://api.ocr.space/parse/image"
+    api_key = "K88895368588957"  # สมัครใช้งาน OCR.Space API เพื่อรับ API Key
+    
+    with open(image_file, "rb") as file:
+        response = requests.post(
+            api_url,
+            files={"filename": file},
+            data={"apikey": api_key, "language": "eng"},
+        )
+        result = response.json()
+        return result.get("ParsedResults", [{}])[0].get("ParsedText", "ไม่พบข้อความ")
+
+# ฟังก์ชันสำหรับเรียกใช้งานโมเดลของคุณ
+def chat_with_model(prompt):
+    """ส่งข้อความไปยังโมเดลของคุณและรับผลลัพธ์"""
+    try:
+        response = requests.post(
+            ollama_url,
+            json={
+                "prompt": prompt,
+                "model": model,
+                "max_token": 2000,
+                "temperature": 1.2,
+                "top_p": 0.99,
+                "top_k": 40,
+                "repetition_penalty": 1.9,
+            },
+        )
+        response.raise_for_status()
+        output = response.json()
+        return output["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"เกิดข้อผิดพลาด: {e}"
 
 # --- MAIN FUNCTION ---
 def main():
