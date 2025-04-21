@@ -1,2 +1,6 @@
 streamlit
 openai
+PyPDF2
+pillow
+pandas
+pytesseract
