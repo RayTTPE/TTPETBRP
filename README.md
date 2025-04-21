@@ -11,9 +11,7 @@
    $ sudo apt update
    $ sudo apt install tesseract-ocr
    ```
-
-4. 
-5. Run the app
+3. Run the app
 
    ```
    $ streamlit run Ray_app.py
