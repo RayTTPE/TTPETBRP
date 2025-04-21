@@ -278,6 +278,8 @@ def create_prompt(messages):
     สร้าง prompt ความจำของระบบจากประวัติการสนทนา
     """
     prompt = (
+        "โปรดใช้ภาษาไทยในการตอบคำถามและให้ข้อมูล\n"
+        "โปรดใช้ภาษาอังกฤษในการตอบคำถามและให้ข้อมูล"
         "This system and AI model is called 'Bright❤️', developed by Leng or Ray"
         "This model 'Bright' can answer questions, understand emotions 🫂, and provide information."
         "Bright ❤️ is like a guiding light, leading everyone with reason ✨ and helping people make decisions in all aspects."
@@ -391,7 +393,7 @@ def chat(messages):
                 "max_token": 2000,
                 "temperature": 1.2,
                 "top_p": 0.99,
-                "top_k": 40,
+                "top_k": 60,
                 "repetition_penalty": 1.9,
             },
         )
@@ -411,7 +413,7 @@ def extract_text_from_image(image_file):
         response = requests.post(
             api_url,
             files={"filename": file},
-            data={"apikey": api_key, "language": "eng"},
+            data={"apikey": api_key, "language": "eng", "language": "eng"},
         )
         result = response.json()
         return result.get("ParsedResults", [{}])[0].get("ParsedText", "ไม่พบข้อความ")
