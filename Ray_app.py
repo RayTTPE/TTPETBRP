@@ -334,10 +334,6 @@ def chatwithRay():
             st.error("ประเภทไฟล์ไม่รองรับ")
             return
 
-        # แสดงเนื้อหาของไฟล์ที่อัปโหลด
-        st.subheader("เนื้อหาของไฟล์ที่อัปโหลด:")
-        st.text_area("เนื้อหา", content, height=300)
-
     # ตรวจสอบว่ามีการเก็บประวัติการสนทนาใน session_state หรือไม่
     if "messages" not in st.session_state:
         st.session_state.messages = []
