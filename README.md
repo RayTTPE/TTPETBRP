@@ -5,8 +5,15 @@
    ```
    $ pip install -r requirements.txt
    ```
+2. ติดตั้ง Tesseract OCR
+   
+   ```
+   $ sudo apt update
+   $ sudo apt install tesseract-ocr
+   ```
 
-2. Run the app
+4. 
+5. Run the app
 
    ```
    $ streamlit run Ray_app.py
