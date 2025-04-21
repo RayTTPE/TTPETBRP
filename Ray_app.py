@@ -9,6 +9,9 @@ from ติดต่อ.contact import contact_form
 import random
 import pandas as pd
 import os
+import pytesseract
+import PyPDF2
+import docx
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
 model = "qwen2.5:14b"
@@ -313,17 +316,14 @@ def chatwithRay():
         if file_type == "text/plain":
             content = upload_file.read().decode("utf-8")
         elif file_type == "application/pdf":
-            import PyPDF2
             pdf_reader = PyPDF2.PdfReader(upload_file)
             for page in pdf_reader.pages:
                 content += page.extract_text()
         elif file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            import docx
             doc = docx.Document(upload_file)
             content = "\n".join([para.text for para in doc.paragraphs])
         elif file_type in ["image/jpeg", "image/png"]:
             from PIL import Image
-            import pytesseract
             img = Image.open(upload_file)
             content = pytesseract.image_to_string(img)
             st.image(img, caption=upload_file.name, use_column_width=True)
