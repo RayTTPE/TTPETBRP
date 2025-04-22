@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 from PIL import Image
 import requests
 import PyPDF2
@@ -11,6 +10,7 @@ import re
 from ติดต่อ.contact import contact_form
 import random
 import os
+from memory import get_prompt
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
