@@ -174,12 +174,122 @@ particles_js = """<!DOCTYPE html>
 </body>
 </html>
 """
+st.markdown(
+    """
+    <style>
+        .snowflake {
+            position: absolute;
+            top: 0;
+            z-index: 9999;
+            pointer-events: none;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+# --- SNOW ANIMATION ---
+st.markdown(
+    """
+    <script>
+        var snowflakes = [];
+        for (var i = 0; i < 100; i++) {
+            var snowflake = document.createElement("div");
+            snowflake.className = "snowflake";
+            snowflake.innerHTML = "&#10052;";
+            snowflake.style.left = Math.random() * window.innerWidth + "px";
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(snowflake);
+            snowflakes.push(snowflake);
+        }
+    </script>
+    """,
+    unsafe_allow_html=True,
+)
+# --- SNOW ANIMATION ---
+st.markdown(
+    """
+    <style>
+        .snowflake {
+            position: absolute;
+            top: 0;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .snowflake:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .snowflake:nth-child(2) { left: 20%; animation-delay: 0.5s; }
+        .snowflake:nth-child(3) { left: 30%; animation-delay: 1s; }
+        .snowflake:nth-child(4) { left: 40%; animation-delay: 1.5s; }
+        .snowflake:nth-child(5) { left: 50%; animation-delay: 2s; }
+        .snowflake:nth-child(6) { left: 60%; animation-delay: 2.5s; }
+        .snowflake:nth-child(7) { left: 70%; animation-delay: 3s; }
+        .snowflake:nth-child(8) { left: 80%; animation-delay: 3.5s; }
+        .snowflake:nth-child(9) { left: 90%; animation-delay: 4s; }
+        .snowflake:nth-child(10) { left: 100%; animation-delay: 4.5s; }
+        @keyframes snow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+        .snowflake {
+            animation: snow linear infinite;
+            font-size: 2rem;
+            color: #ffffff;
+            opacity: 0.8;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            animation-name: snow;
+            animation-duration: 10s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+            animation-delay: 0s;
+            animation-direction: normal;
+            animation-play-state: running;
+            transform: translateY(0);
+            transform-origin: center;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.5s ease-in-out;
+        }
+        .snowflake:hover {
+            transform: scale(1.2) rotate(360deg);
+            transition: transform 0.5s ease-in-out;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation-duration: 5s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+            animation-delay: 0s;
+            animation-direction: normal;
+            animation-play-state: running;
+            transform: translateY(0);
+            transform-origin: center;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.5s ease-in-out;
+            animation-name: snow;
+            animation-duration: 10s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+            animation-delay: 0s;
+            animation-direction: normal;
+            animation-play-state: running;
+            transform: translateY(0);
+            transform-origin: center;
+            transform-style: preserve-3d;
+            will-change: transform;
+            transition: transform 0.5s ease-in-out;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 st.session_state.show_animation = True
 if "has_snowed" not in st.session_state:
     st.snow()
     st.session_state["has_snowed"] = True
 if st.session_state.show_animation:
-    components.html(particles_js, height=370, scrolling=False)
+    components.html(particles_js, height=370, scrolling=True)
 
 def about_ray_dream():
     st.markdown(
@@ -189,15 +299,108 @@ def about_ray_dream():
             font-size: 3rem;
             color: #FFC0CB;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #FF69B4, #FF1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 2s ease-in-out;
         }
         .hero-text {
             font-size: 1.2rem;
             line-height: 1.6;
-            color: #FFC0CB;
+            color: pink;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            margin-top: 20px;
+            text-align: center;
         }
         .sidebar-text {
             font-size: 0.9rem;
-            color: #FFFFFF;
+            color: pink;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .sidebar-title {
+            font-size: 2rem;
+            color: #FFC0CB;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .sidebar-pages {
+            font-size: 1.5rem;
+            color: #FFC0CB;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .sidebar-text {
+            font-size: 1rem;
+            color: #FFC0CB;
+            text-align: left;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .hero-button {
+            background-color: #FF69B4;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .hero-button:hover {
+            background-color: #FF1493;
+            color: white;
+            text-decoration: none;
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .hero-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .hero-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+    st.markdown(
+    """
+    <style>
+        .stApp {
+            background: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGJsdXUlMjB3aGl0ZXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+            background-size: cover;
         }
     </style>
     """,
@@ -210,6 +413,7 @@ def about_ray_dream():
 
     with col2:
         st.markdown('<h1 class="hero-title">Dream & Ray</h1>', unsafe_allow_html=True)
+        
         st.markdown(
             '<p class="hero-text">'
             "ความรักในช่วงเวลาแบบนี้เหมือนกับการที่โลกหยุดนิ่ง ให้ทั้งคู่สามารถมองเห็นกันและกันอย่างเต็มตา"
@@ -231,9 +435,114 @@ def about_ray_dream():
         - 💕 ความใส่ใจเล็กๆ เปลี่ยนแปลงโลกให้สดใสขึ้น
         """
     )
+    #css style st.subheader
+    st.markdown(
+        """
+        <style>
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    #css animetion
+    st.markdown(
+        """
+        <style>
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 2s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 2s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 2s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 2s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 2s ease-in-out;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     st.write("\n")  # เพิ่มระยะห่าง
     st.subheader("เรื่องราวของเรา", anchor=False)
+    #css style หัวข้อ เรื่องราวของเรา
+    
     st.write(
         """
         - 📍เรื่องราวของเราเริ่มจากวันที่ฝันกลายเป็นจริง 26/04/2022และทุกอย่างเปลี่ยนไปตั้งแต่วันนั้น
@@ -260,6 +569,8 @@ def about_ray_dream():
 
         """
     )
+    st.write("\n")
+    
 
 def get_random_title():
     """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
@@ -284,8 +595,57 @@ def create_prompt(messages):
     return prompt
 
 def chatwithRay():
+    #css style background
+    st.markdown(
+        """
+        <style>
+            .stApp {
+                background: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGJsdXUlMjB3aGl0ZXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+                background-size: cover;
+            }
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stChatMessage {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stChatInput {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stButton {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stFileUploader {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     st.write("ยินดีต้อนรับสู่แชทบอทของเรา! คุณสามารถถามคำถามหรือขอความช่วยเหลือจากเราได้✨")
     st.title(get_random_title())
+    
     
     # อัปโหลดไฟล์
     upload_file = st.file_uploader("อัปโหลดไฟล์", type=["txt", "pdf", "docx", "jpg", "png"], label_visibility="collapsed")
@@ -348,6 +708,7 @@ def chatwithRay():
             for chunk in response_generator(response["content"]):
                 current_content += chunk
                 placeholder.markdown(current_content)
+    
 
 def response_generator(msg_content):
     """สตรีมข้อความทีละคำเพื่อสร้างเอฟเฟกต์ตอบกลับแบบเรียลไทม์"""
@@ -430,7 +791,7 @@ def main():
         /* เปลี่ยนสีพื้นหลังของ Sidebar */
         [data-testid="stSidebar"] {
             background-color: #2E4053;
-            color: white;
+            color: chocolate;
         }
 
         /* ปรับแต่งข้อความใน Sidebar */
@@ -442,7 +803,7 @@ def main():
 
         /* ปรับแต่งปุ่ม Radio */
         [data-testid="stSidebar"] .stRadio > label {
-            font-size: 1rem;
+            font-size: 5rem;
             color: #FFFF00;
         }
 
@@ -451,6 +812,21 @@ def main():
             border-radius: 10px;
             margin-bottom: 10px;
         }
+        /* ปรับแต่งข้อความใน Sidebar */
+        [data-testid="stSidebar"] .sidebar-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+        [data-testid="stSidebar"] > div:first-child {{
+        background-image: ("รูป/DR.jpg);
+        background-color: #2E4053;
+        background-position: center; 
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        }}
+
     </style>
     """,
         unsafe_allow_html=True,
