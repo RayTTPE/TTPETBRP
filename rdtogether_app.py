@@ -464,12 +464,12 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 10s ease-in-out;
+                animation: fadeIn 3s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
-                    transform: translateY(-30px);
+                    transform: translateY(-20px);
                 }
                 100% {
                     opacity: 1;
@@ -481,7 +481,41 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 15s ease-in-out;
+                animation: fadeIn 5s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 5s ease-in-out;
+            }
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+                animation: fadeIn 10s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
@@ -498,41 +532,7 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 20s ease-in-out;
-            }
-            @keyframes fadeIn {
-                0% {
-                    opacity: 0;
-                    transform: translateY(-90px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .stMarkdown {
-                font-size: 1.2rem;
-                color: #FFC0CB;
-                text-align: left;
-                font-weight: bold;
-                animation: fadeIn 25s ease-in-out;
-            }
-            @keyframes fadeIn {
-                0% {
-                    opacity: 0;
-                    transform: translateY(-120px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .stSubheader {
-                font-size: 2rem;
-                color: #FFC0CB;
-                text-align: left;
-                font-weight: bold;
-                animation: fadeIn 30s ease-in-out;
+                animation: fadeIn 10s ease-in-out;
             }
         </style>
         """,
@@ -600,7 +600,6 @@ def dashboard():
     st.subheader("ข้อมูลการใช้งาน", anchor=False)
     st.write(
         """
-        อยู่ระหว่างการพัฒนา
         """
     )
 
