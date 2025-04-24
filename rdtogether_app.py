@@ -464,12 +464,12 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 2s ease-in-out;
+                animation: fadeIn 10s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-30px);
                 }
                 100% {
                     opacity: 1;
@@ -481,12 +481,12 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 2s ease-in-out;
+                animation: fadeIn 15s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-60px);
                 }
                 100% {
                     opacity: 1;
@@ -498,12 +498,12 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 2s ease-in-out;
+                animation: fadeIn 20s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-90px);
                 }
                 100% {
                     opacity: 1;
@@ -515,12 +515,12 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 2s ease-in-out;
+                animation: fadeIn 25s ease-in-out;
             }
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-120px);
                 }
                 100% {
                     opacity: 1;
@@ -532,7 +532,7 @@ def about_ray_dream():
                 color: #FFC0CB;
                 text-align: left;
                 font-weight: bold;
-                animation: fadeIn 2s ease-in-out;
+                animation: fadeIn 30s ease-in-out;
             }
         </style>
         """,
@@ -563,13 +563,48 @@ def about_ray_dream():
     )
 
     st.write("\n")
+#สร้าง dashboard
+def dashboard():
     st.markdown(
         """
-        
-
+        <style>
+            .stMarkdown {
+                font-size: 1.2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+            .stSubheader {
+                font-size: 2rem;
+                color: #FFC0CB;
+                text-align: left;
+                font-weight: bold;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <style>
+            .stApp {
+                background: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGdhbGF4eXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+                background-size: cover;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.title("Dashboard")
+    st.write("ยินดีต้อนรับสู่แดชบอร์ดของเรา! คุณสามารถดูข้อมูลและสถิติต่างๆ ได้ที่นี่✨")
+    st.subheader("ข้อมูลการใช้งาน", anchor=False)
+    st.write(
+        """
         """
     )
+
     st.write("\n")
+    
     
 
 def get_random_title():
@@ -600,16 +635,19 @@ def chatwithRay():
         """
         <style>
             .stApp {
-                background: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fHN0YXJyeSUyMHNreXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+                background: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGVhcnRoJTIwYW5kJTIwc3RhcnN8ZW58MHx8fHwxNjk2OTU0NTcx&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
                 background-size: cover;
                 background-repeat: no-repeat;
                 color: brown;
             }
             .stMarkdown {
                 font-size: 1.2rem;
-                color: #FFC0CB;
+                color: dark;
                 text-align: left;
                 font-weight: bold;
+                text-shadow: 1px 1px 2px rgba(1,1,0,1.5);
+                margin-top: 0px;
+                text-align: left;
             }
             .stSubheader {
                 font-size: 2rem;
@@ -625,7 +663,7 @@ def chatwithRay():
             }
             .stChatInput {
                 font-size: 1.2rem;
-                color: #FFC0CB;
+                color: black;
                 text-align: left;
                 font-weight: bold;
             }
@@ -652,28 +690,6 @@ def chatwithRay():
     # อัปโหลดไฟล์
     upload_file = st.file_uploader("อัปโหลดไฟล์", type=["txt", "pdf", "docx", "jpg", "png"], label_visibility="collapsed")
     content = ""
-    
-    if upload_file is not None:
-        # อ่านไฟล์ที่อัปโหลด
-        file_type = upload_file.type
-        if file_type == "text/plain":
-            content = upload_file.read().decode("utf-8")
-        elif file_type == "application/pdf":
-            pdf_reader = PyPDF2.PdfReader(upload_file)
-            for page in pdf_reader.pages:
-                content += page.extract_text()
-        elif file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            doc = docx.Document(upload_file)
-            content = "\n".join([para.text for para in doc.paragraphs])
-        elif file_type in ["image/jpeg", "image/png"]:
-            img_path = f"/tmp/{upload_file.name}"
-            with open(img_path, "wb") as f:
-                f.write(upload_file.getbuffer())
-            content = extract_text_from_image(img_path)
-            st.image(img_path, caption=upload_file.name, use_column_width=True)
-        else:
-            st.error("ประเภทไฟล์ไม่รองรับ")
-            return
 
     # ตรวจสอบว่ามีการเก็บประวัติการสนทนาใน session_state หรือไม่
     if "messages" not in st.session_state:
@@ -687,6 +703,26 @@ def chatwithRay():
     # รับข้อความจากผู้ใช้
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input or content:
+        #อ่านไฟล์ที่อัพโหลด
+        if upload_file is not None:
+            if upload_file.type == "text/plain":
+                content = upload_file.read().decode("utf-8")
+            elif upload_file.type == "application/pdf":
+                with open(upload_file, "rb") as f:
+                    reader = PyPDF2.PdfReader(f)
+                    content = ""
+                    for page in reader.pages:
+                        content += page.extract_text()
+            elif upload_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                doc = docx.Document(upload_file)
+                content = "\n".join([para.text for para in doc.paragraphs])
+            elif upload_file.type.startswith("image/"):
+                content = extract_text_from_image(upload_file)
+                if content:
+                    st.write("ข้อความที่ดึงจากรูปภาพ:")
+                    st.write(content)
+                else:
+                    st.write("ไม่สามารถดึงข้อความจากรูปภาพได้")
         # เพิ่มข้อความของผู้ใช้ในประวัติการสนทนา
         if user_input:
             st.session_state.messages.append({"role": "user", "content": user_input})
@@ -784,6 +820,7 @@ def main():
     pages = {
         "About Ray & Dream": about_ray_dream, 
         "แชทกับเรา": chatwithRay,
+        "Dashboard": dashboard,
     }
 
     selected_page = st.sidebar.radio("สำรวจ", list(pages.keys()))
@@ -832,7 +869,6 @@ def main():
     </style>
     """,
         unsafe_allow_html=True,
-        
     )
 
     st.sidebar.markdown(
@@ -843,7 +879,7 @@ def main():
     )
     st.sidebar.markdown(
         """
-        
+
         """
     )
     # Run selected page function
@@ -860,6 +896,7 @@ st.sidebar.markdown(
             background-attachment: fixed;
             background-position: center;
             color: White;
+
         }
     </style>
     """,
