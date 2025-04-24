@@ -600,6 +600,7 @@ def dashboard():
     st.subheader("ข้อมูลการใช้งาน", anchor=False)
     st.write(
         """
+        อยู่ระหว่างการพัฒนา
         """
     )
 
@@ -869,6 +870,7 @@ def main():
     </style>
     """,
         unsafe_allow_html=True,
+        
     )
 
     st.sidebar.markdown(
