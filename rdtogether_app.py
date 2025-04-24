@@ -859,7 +859,7 @@ st.sidebar.markdown(
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-position: center;
-            color: Black;
+            color: White;
         }
     </style>
     """,
