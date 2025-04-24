@@ -11,7 +11,6 @@ from ติดต่อ.contact import contact_form
 import random
 import os
 from memory import get_prompt
-import base64
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
 ollama_url = "https://monthly-causal-shrimp.ngrok-free.app/v1/chat/completions"
@@ -601,8 +600,10 @@ def chatwithRay():
         """
         <style>
             .stApp {
-                background: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGJsdXUlMjB3aGl0ZXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+                background: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fHN0YXJyeSUyMHNreXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
                 background-size: cover;
+                background-repeat: no-repeat;
+                color: brown;
             }
             .stMarkdown {
                 font-size: 1.2rem;
@@ -848,6 +849,22 @@ def main():
     # Run selected page function
     pages[selected_page]()
 st.sidebar.image("รูป/DR.jpg", width=150)
+#อัพโหลดรูปภาพพื้นหลัง sidebar
+st.sidebar.markdown(
+    """
+    <style>
+        [data-testid="stSidebar"] {
+            background-image: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGZvcmVzdHxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: Black;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 if __name__ == "__main__":
     main()
