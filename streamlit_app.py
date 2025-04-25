@@ -708,28 +708,21 @@ def chatwithRay():
             if upload_file.type == "text/plain":
                 content = upload_file.read().decode("utf-8")
             elif upload_file.type == "application/pdf":
-                pdf_reader = PyPDF2.PdfReader(upload_file)
-                for page in pdf_reader.pages:
-                    content += page.extract_text()
-            elif upload_file.type == "application/pdf":
                 with open(upload_file, "rb") as f:
+                    reader = PyPDF2.PdfReader(f)
+                    content = ""
                     for page in reader.pages:
-                        reader = PyPDF2.PdfReader(f)
                         content += page.extract_text()
             elif upload_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                 doc = docx.Document(upload_file)
                 content = "\n".join([para.text for para in doc.paragraphs])
-            elif upload_file.type == "image/jpeg" or upload_file.type == "image/png":
-                img_path = f"/tmp/{upload_file.name}"
-                with open(img_path, "wb") as f:
-                    f.write(upload_file.getbuffer())
-                # ใช้ OCR API เพื่อดึงข้อความจากรูปภาพ
-                content = extract_text_from_image(img_path)
-                st.image(img_path, caption=upload_file.name, use_column_width=True)
-                st.success("อัปโหลดไฟล์สำเร็จ!")
-                st.write(content)
-            else:
-                st.write("ประเภทไฟล์ไม่รองรับ")
+            elif upload_file.type.startswith("image/"):
+                content = extract_text_from_image(upload_file)
+                if content:
+                    st.write("ข้อความที่ดึงจากรูปภาพ:")
+                    st.write(content)
+                else:
+                    st.write("ไม่สามารถดึงข้อความจากรูปภาพได้")
         # เพิ่มข้อความของผู้ใช้ในประวัติการสนทนา
         if user_input:
             st.session_state.messages.append({"role": "user", "content": user_input})
