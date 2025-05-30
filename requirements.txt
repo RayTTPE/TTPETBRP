@@ -6,3 +6,5 @@ pandas
 pytesseract
 python-docx
 yfinance
+plotly
+streamlit-autorefresh
