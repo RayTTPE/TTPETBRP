@@ -11,8 +11,8 @@ import os
 from memory import get_prompt
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
-ollama_url = "https://50a8-171-7-211-183.ngrok-free.app/v1/chat/completions"
-model = "qwen2.5:14b"
+ollama_url = "https://4655-171-7-211-183.ngrok-free.app/v1/chat/completions"
+model = "gemma3:12b"
 
 config = {
     "primaryColor": "#d33682",
