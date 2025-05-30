@@ -1,6 +1,8 @@
 import streamlit as st
 from PIL import Image
 import requests
+import PyPDF2
+import docx
 import sqlite3
 import json
 import streamlit.components.v1 as components
@@ -561,60 +563,116 @@ def about_ray_dream():
     )
 
     st.write("\n")
+#สร้าง dashboard
 import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
+
 def dashboard():
-    st.markdown(
-        """
-        <style>
-            .stMarkdown {
-                font-size: 1.2rem;
-                color: #FFC0CB;
-                text-align: left;
-                font-weight: bold;
-            }
-            .stSubheader {
-                font-size: 2rem;
-                color: #FFC0CB;
-                text-align: left;
-                font-weight: bold;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        """
-        <style>
-            .stApp {
-                background: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGdhbGF4eXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
-                background-size: cover;
-            }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("""
+    <style>
+        .stMarkdown {
+            font-size: 1.4rem;
+            color: #FFD700; /* สีทอง */
+            text-align: left;
+            font-weight: bold;
+        }
+        .stSubheader {
+            font-size: 2.2rem;
+            color: #FFD700;
+            text-align: left;
+            font-weight: bold;
+        }
+        .stApp {
+            background: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGdhbGF4eXxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.title("📊 Real-Time Gold Spot Dashboard")
     st_autorefresh(interval=60000, key="refresh_gold")
 
     st.subheader("📈 กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
 
     try:
-        gold = yf.Ticker("GC=F")  # Gold Futures
-        hist = gold.history(period="1d", interval="1m")
+        range_options = {
+            "1 นาที": ("1d", "1m"),
+            "5 นาที": ("1d", "5m"),
+            "15 นาที": ("1d", "15m"),
+            "30 นาที": ("1d", "30m"),
+            "1 ชั่วโมง": ("1d", "1h"),
+            "1 วัน": ("7d", "1h"),
+            "30 วัน": ("30d", "1h"),
+            "90 วัน": ("90d", "1h"),
+            "180 วัน": ("180d", "4h"),
+            "1 ปี": ("1y", "4h"),
+            "2 ปี": ("2y", "4h"),
+        }
+
+        selected_range = st.selectbox("เลือกช่วงเวลาย้อนหลัง:", list(range_options.keys()))
+        period, interval = range_options[selected_range]
+
+        chart_type = st.selectbox("เลือกประเภทกราฟ:", ["เส้น", "แท่งเทียน"])
+
+        gold = yf.Ticker("GC=F")
+        hist = gold.history(period=period, interval=interval)
         hist = hist.reset_index()
 
+        if hist['Datetime'].dt.tz is None:
+            hist['Datetime'] = hist['Datetime'].dt.tz_localize('UTC')
+        hist['Datetime'] = hist['Datetime'].dt.tz_convert('Asia/Bangkok')
+
+        # คำนวณการเปลี่ยนแปลงราคา
+        price_now = hist['Close'].iloc[-1]
+        price_prev = hist['Close'].iloc[0]
+        price_diff = price_now - price_prev
+        price_pct = (price_diff / price_prev) * 100
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=hist['Datetime'], y=hist['Close'], mode='lines', name='Gold Spot'))
-        fig.update_layout(title="ราคา Gold Spot อัพเดททุก 1วัน และ1นาที ", xaxis_title="Time", yaxis_title="USD")
+
+        change_color = "#00FF00" if price_pct >= 0 else "#FF6347"
+        st.markdown(f"""
+        <div style="
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.4rem;
+            color: {change_color};
+            font-weight: bold;
+            box-shadow: 0 0 10px #000000;
+        ">
+            การเปลี่ยนแปลงในช่วง <span style='color:#FFD700;'>{selected_range}</span>: {price_pct:+.2f}%
+        </div>
+        """, unsafe_allow_html=True)
+
+
+        if chart_type == "แท่งเทียน":
+            fig.add_trace(go.Candlestick(
+                x=hist['Datetime'],
+                open=hist['Open'],
+                high=hist['High'],
+                low=hist['Low'],
+                close=hist['Close'],
+                name="Gold Spot"
+            ))
+        else:
+            fig.add_trace(go.Scatter(x=hist['Datetime'], y=hist['Close'], mode='lines', name='Gold Spot'))
+
+        fig.update_layout(
+            title=f"ราคาทองคำ Spot ({selected_range})",
+            xaxis_title="ตามเวลา(ประเทศไทย)",
+            yaxis_title="USD",
+            template="plotly_dark",
+            font=dict(size=14, color="#FFD700")
+        )
 
         st.plotly_chart(fig, use_container_width=True)
-        st.success(f"ราคาทองคำล่าสุด: ${hist['Close'].iloc[-1]:,.2f} USD")
+        st.success(f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
     except Exception as e:
         st.error(f"ไม่สามารถโหลดข้อมูลราคาทองคำได้: {e}")
-    
+
 def get_random_title():
     """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
     titles = [
