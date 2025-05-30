@@ -561,7 +561,10 @@ def about_ray_dream():
     )
 
     st.write("\n")
-#สร้าง dashboard
+import yfinance as yf
+import pandas as pd
+import plotly.graph_objects as go
+from streamlit_autorefresh import st_autorefresh
 def dashboard():
     st.markdown(
         """
@@ -593,18 +596,25 @@ def dashboard():
         """,
         unsafe_allow_html=True,
     )
-    st.title("Dashboard")
-    st.write("ยินดีต้อนรับสู่แดชบอร์ดของเรา! คุณสามารถดูข้อมูลและสถิติต่างๆ ได้ที่นี่✨")
-    st.subheader("ข้อมูลการใช้งาน", anchor=False)
-    st.write(
-        """
-        """
-    )
+    st.title("📊 Real-Time Gold Spot Dashboard")
+    st_autorefresh(interval=60000, key="refresh_gold")
 
-    st.write("\n")
-    
-    
+    st.subheader("📈 กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
 
+    try:
+        gold = yf.Ticker("GC=F")  # Gold Futures
+        hist = gold.history(period="1d", interval="1m")
+        hist = hist.reset_index()
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=hist['Datetime'], y=hist['Close'], mode='lines', name='Gold Spot'))
+        fig.update_layout(title="ราคา Gold Spot อัพเดททุก 1วัน และ1นาที ", xaxis_title="Time", yaxis_title="USD")
+
+        st.plotly_chart(fig, use_container_width=True)
+        st.success(f"ราคาทองคำล่าสุด: ${hist['Close'].iloc[-1]:,.2f} USD")
+    except Exception as e:
+        st.error(f"ไม่สามารถโหลดข้อมูลราคาทองคำได้: {e}")
+    
 def get_random_title():
     """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
     titles = [
