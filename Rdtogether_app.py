@@ -1,8 +1,6 @@
 import streamlit as st
 from PIL import Image
 import requests
-import PyPDF2
-import docx
 import sqlite3
 import json
 import streamlit.components.v1 as components
