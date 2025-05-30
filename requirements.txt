@@ -5,3 +5,4 @@ pillow
 pandas
 pytesseract
 python-docx
+yfinance
