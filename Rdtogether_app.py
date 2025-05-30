@@ -13,7 +13,7 @@ import os
 from memory import get_prompt
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
-ollama_url = "https://4655-171-7-211-183.ngrok-free.app/v1/chat/completions"
+ollama_url = "https://fcf2-171-7-34-62.ngrok-free.app/v1/chat/completions"
 model = "gemma3:12b"
 
 config = {
