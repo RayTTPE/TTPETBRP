@@ -14,5 +14,5 @@
 3. Run the app
 
    ```
-   $ streamlit run Ray_app.py
+   $ streamlit run Rdtogether_app.py
    ```
