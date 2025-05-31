@@ -429,61 +429,66 @@ def about_ray_dream():
         st.image("./รูป/Ray.jpg", width=300)
 
     with col2:
-        st.markdown('<h1 class="hero-title">Rey(เรย์) or Leng(เล้ง)</h1>', unsafe_allow_html=True)
+        st.markdown('<h1 class="hero-title">Leng(เล้ง)</h1>', unsafe_allow_html=True)
         
         st.markdown("""
             <style>
                 .resume-section {
-                    background-color: rgba(0, 0, 0, 0.7);
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
                     padding: 15px;
-                    border-radius: 10px;
+                    border-radius: 15px;
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
                     font-size: 2rem;
                     font-weight: bold;
-                    color: #FFD700;
+                    color: #333333;
                     margin-top: 20px;
                     text-align: center;
                 }
                 .resume-box {
-                    background: linear-gradient(135deg, rgba(255, 105, 180, 0.6), rgba(255, 20, 147, 0.6));
+                    background-color: rgba(255, 255, 255, 0.7);
                     padding: 15px;
-                    border-radius: 10px;
-                    box-shadow: 0px 8px 16px rgba(255, 20, 147, 0.2);
+                    border-radius: 20px;
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
                     color: #333333;
-                    font-size: 1.2rem;
-                    line-height: 1.6;
-                }
-                .resume-sectionA {
-                    background: linear-gradient(135deg, rgba(34, 139, 34, 0.7), rgba(0, 128, 128, 0.5));
-                    padding: 15px;
-                    border-radius: 10px;
-                    box-shadow: 0px 6px 12px rgba(34, 139, 34, 0.3);
-                    color: #FFB6C1;
-                    font-size: 1.2rem;
-                    line-height: 1.6;
-                }
-
-                .resume-text {
-                    background: rgba(0, 128, 0, 0.6);
-                    padding: 15px;
-                    border-radius: 10px;
-                    box-shadow: 0px 6px 12px rgba(0, 128, 0, 0.3);
-                    color: #FFD700;
                     font-size: 1rem;
                     line-height: 1.6;
                 }
-                .resume-textB { 
-                    background-color: rgba(0, 0, 0, 0.7);
-                    border-radius: 10px;
+                .resume-sectionA {
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
                     padding: 15px;
-                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-                    color: #FFC0CB; 
-                    font-size: 1rem; line-height: 1.6;
+                    border-radius: 15px;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                    font-size: 2rem;
+                    font-weight: bold;
+                    color: #333333;
+                    margin-top: 20px;
+                    text-align: left;
                 }
-                .resume-sectionB {
-                    background: linear-gradient(135deg, rgba(255, 165, 0, 0.7), rgba(255, 215, 0, 0.5));
+                .resume-text {
+                    background: rgba(255, 255, 255, 0.5);
                     padding: 15px;
                     border-radius: 10px;
-                    box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.4);
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+                    color: #333;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                }
+
+                .resume-textB { 
+                    background-color: rgba(255, 255, 255, 0.6);
+                    border-radius: 10px;
+                    padding: 15px;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                    color: #333;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                }
+
+                .resume-sectionB {
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.2);
                     color: #333;
                     font-size: 1.2rem;
                     line-height: 1.6;
@@ -496,7 +501,7 @@ def about_ray_dream():
             <div class="resume-box">
                 <b>ชื่อ:</b> กันตภณ ม้าสุวรรณ<br>
                 <b>การศึกษา:</b> นักศึกษาชั้นปีที่ 4 มหาวิทยาลัยกรุงเทพ สาขาการแสดง<br>
-                <b>ความสนใจ:</b> ศึกษาเทคโนโลยี, ออกแบบ UI/UX, AI, การวิเคราะห์ข้อมูล
+                <b>ความสามารถเฉพาะทาง:</b> Generative AI chatbot วิเคราะห์ข้อมูลแบบเรียลไทม์หรือให้ragก็ได้
             </div>
             """, unsafe_allow_html=True)
 
@@ -626,18 +631,6 @@ def about_ray_dream():
     🔥 ผสมผสาน AI เข้ากับการทำงานหรือฟังชั้นต่างๆที่พอหาได้ให้โมเดลมีเครื่องมือที่ครบที่สุด
     </div>
     """, unsafe_allow_html=True)
-
-
-    st.write("\n")
-    st.markdown(
-        """
-        <hr style="border: 1px solid #ddd; margin: 20px 0;">
-        <p class="sidebar-text">สร้างโดยเล้ง(เรย์) ❤️ กันตภณ ม้าสุวรรณ</p>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.write("\n")
 
 import yfinance as yf
 import pandas as pd
