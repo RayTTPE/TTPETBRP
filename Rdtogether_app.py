@@ -973,41 +973,9 @@ def chatwithRay():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # แทรก CSS สไตล์สำหรับ chat bubble
-    st.markdown("""
-        <style>
-            .element-container:has(.chat-message) {
-                padding: 8px 12px;
-            }
-
-            .stChatMessageContent {
-                background-color: rgba(255,255,255,0.1);
-                padding: 12px 18px;
-                border-radius: 12px;
-                font-size: 1.1rem;
-                line-height: 1.6;
-                box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
-            }
-
-            [data-testid="chat-message-user"] .stChatMessageContent {
-                background-color: rgba(255, 215, 0, 0.15);
-                color: #FFD700;
-                font-weight: bold;
-            }
-
-            [data-testid="chat-message-assistant"] .stChatMessageContent {
-                background-color: rgba(135, 206, 235, 0.15);
-                color: #87CEEB;
-                font-weight: bold;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-
     # แสดงข้อความแบบ bubble พร้อมระบบ chat_message
     for msg in st.session_state.messages:
-        avatar_url = "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" if msg["role"] == "user" else "/workspaces/TTPETBRP/รูป/S__23592963.jpg"
-        
-        with st.chat_message(msg["role"], avatar=avatar_url):
+        with st.chat_message(msg["role"]):  # ไม่มี avatar
             st.markdown(f"""
                 <div style='
                     background-color: {"rgba(255, 215, 0, 0.1)" if msg["role"] == "user" else "rgba(135, 206, 235, 0.15)"};
@@ -1020,7 +988,9 @@ def chatwithRay():
                     box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
                 '>
                     {msg["content"]}
+                </div>
             """, unsafe_allow_html=True)
+
     
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input or content:
