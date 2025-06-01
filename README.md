@@ -1,11 +1,11 @@
-### How to run it on your own machine
+### วิธีติดตั้งใช้งานบนเครื่องของคุณ
 
-1. Install the requirements
+1. ติดตั้ง requirements
 
    ```
    $ pip install -r requirements.txt
    ```
-2. Run the app
+2. รันapp
 
    ```
    $ streamlit run Rdtogether_app.py
