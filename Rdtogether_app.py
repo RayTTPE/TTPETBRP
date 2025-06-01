@@ -966,7 +966,7 @@ def chatwithRay():
     st.write("ยินดีต้อนรับสู่แชทบอทของเรา! คุณสามารถถามคำถามหรือขอความช่วยเหลือจากเราได้✨")
     st.title(get_random_title())
     
-    upload_file = st.file_uploader("อัปโหลดไฟล์", type=["txt", "pdf", "docx", "jpg", "png"], label_visibility="collapsed")
+    upload_file = st.file_uploader("อัปโหลดไฟล์", type=["txt", "pdf", "docx", "jpg", "png", "py"], label_visibility="collapsed")
     content = ""
 
     if "messages" not in st.session_state:
@@ -1042,6 +1042,10 @@ def chatwithRay():
                 img_path = f"/tmp/{upload_file.name}"
                 with open(img_path, "wb") as f:
                     f.write(upload_file.getbuffer())
+            elif upload_file is not None:
+                if upload_file.type in ["text/plain", "text/x-python"]:
+                    lines = upload_file.read().decode("utf-8").split("\n")
+                    content = "\n".join(lines[:2000])
 
                 content = extract_text_from_image(img_path)
                 st.image(img_path, caption=upload_file.name, use_column_width=True)
