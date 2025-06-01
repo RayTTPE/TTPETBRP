@@ -1004,7 +1004,7 @@ def chatwithRay():
 
     # แสดงข้อความแบบ bubble พร้อมระบบ chat_message
     for msg in st.session_state.messages:
-        avatar_url = "https://cdn-icons-png.flaticon.com/512/847/847969.png" if msg["role"] == "user" else "/workspaces/TTPETBRP/รูป/S__23592963.jpg"
+        avatar_url = "https://cdn-icons-png.flaticon.com/512/847/847969.png" if msg["role"] == "user" else "./รูป/S__23592963.jpg"
         
         with st.chat_message(msg["role"], avatar=avatar_url):
             st.markdown(f"""
