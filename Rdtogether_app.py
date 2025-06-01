@@ -553,7 +553,8 @@ def dashboard():
             "15 นาที": ("1d", "15m"),
             "30 นาที": ("1d", "30m"),
             "1 ชั่วโมง": ("1d", "1h"),
-            "1 วัน": ("3d", "1h"),
+            "1 วัน": ("1d", "4h"),
+            "3 วัน": ("3d", "4h"),
             "7 วัน": ("7d", "4h"),
             "30 วัน": ("30d", "4h"),
             "90 วัน": ("90d", "4h"),
@@ -622,7 +623,7 @@ def dashboard():
         st.success(f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
 
     except Exception as e:
-        st.error(f"ตลาดปิดทำการในวันหยุด: กรุณาดูย้อนหลังมากกว่า 1 วัน")
+        st.error(f"ตลาดปิดทำการในวันหยุด: กรุณาดูย้อนหลัง 3 วัน")
 
 def หน้าที่4():
     st.markdown("""
@@ -1023,22 +1024,27 @@ def chatwithRay():
     
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input or content:
+
         if upload_file is not None:
             file_type = upload_file.type
             if upload_file.type == "text/plain":
                 content = upload_file.read().decode("utf-8")
+
             elif upload_file.type == "application/pdf":
                 pdf_reader = PyPDF2.PdfReader(upload_file)
                 for page in pdf_reader.pages:
                     content += page.extract_text()
+
             elif upload_file.type == "application/pdf":
                 with open(upload_file, "rb") as f:
                     for page in reader.pages:
                         reader = PyPDF2.PdfReader(f)
                         content += page.extract_text()
+
             elif upload_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                 doc = docx.Document(upload_file)
                 content = "\n".join([para.text for para in doc.paragraphs])
+
             elif file_type in ["image/jpeg", "image/png"]:
                 img_path = f"/tmp/{upload_file.name}"
                 with open(img_path, "wb") as f:
