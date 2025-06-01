@@ -1019,7 +1019,6 @@ def chatwithRay():
                     box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
                 '>
                     {msg["content"]}
-                </div>
             """, unsafe_allow_html=True)
     
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
