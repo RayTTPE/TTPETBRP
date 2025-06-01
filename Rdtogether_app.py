@@ -30,150 +30,7 @@ config = {
         "scale": 6
     }
 }
-particles_js = """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Particles.js</title>
-  <style>
-  #particles-js {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    z-index: -1; /* Send the animation to the back */
-  }
-  .content {
-    position: relative;
-    z-index: 1;
-    color: white;
-  }
-  
-</style>
-</head>
-<body>
-  <div id="particles-js"></div>
-  <div class="content">
-    <!-- Placeholder for Streamlit content -->
-  </div>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
-    particlesJS("particles-js", {
-      "particles": {
-        "number": {
-          "value": 300,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": "#ffffff"
-        },
-        "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          },
-          "polygon": {
-            "nb_sides": 5
-          },
-          "image": {
-            "src": "img/github.svg",
-            "width": 100,
-            "height": 100
-          }
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 1,
-            "opacity_min": 0.2,
-            "sync": false
-          }
-        },
-        "size": {
-          "value": 2,
-          "random": true,
-          "anim": {
-            "enable": false,
-            "speed": 40,
-            "size_min": 0.1,
-            "sync": false
-          }
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 100,
-          "color": "#ffffff",
-          "opacity": 0.22,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 0.2,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": true,
-          "attract": {
-            "enable": false,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "grab"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "repulse"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 100,
-            "line_linked": {
-              "opacity": 1
-            }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 2,
-            "duration": 2,
-            "opacity": 0.5,
-            "speed": 1
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 2
-          },
-          "remove": {
-            "particles_nb": 3
-          }
-        }
-      },
-      "retina_detect": true
-    });
-  </script>
-</body>
-</html>
-"""
+
 st.markdown(
     """
     <style>
@@ -288,8 +145,6 @@ st.session_state.show_animation = True
 if "has_snowed" not in st.session_state:
     st.snow()
     st.session_state["has_snowed"] = True
-if st.session_state.show_animation:
-    components.html(particles_js, height=370, scrolling=True)
 
 def about_ray_dream():
     st.markdown(
@@ -661,6 +516,30 @@ def dashboard():
         }
     </style>
     """, unsafe_allow_html=True)
+    particles_js = """
+    <div id="particles-js"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
+                "color": {"value": "#ffffff"},
+                "shape": {"type": "circle"},
+                "opacity": {"value": 0.5},
+                "size": {"value": 2, "random": true},
+                "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
+                "move": {"enable": true, "speed": 0.2, "direction": "none"}
+            },
+            "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+        });
+    </script>
+    """
+
+    st.session_state.show_animation = True
+
+    # แสดง Particle Animation
+    if st.session_state.show_animation:
+        components.html(particles_js, height=370, scrolling=False)
 
     st.title("📊 Real-Time Gold Spot Dashboard")
     st_autorefresh(interval=60000, key="refresh_gold")
@@ -742,77 +621,150 @@ def dashboard():
         st.plotly_chart(fig, use_container_width=True)
         st.success(f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
 
-        st.markdown("""
-            <style>
-                .subheader {
-                    font-size: 2rem;
-                    color: #FFD700;
-                    text-align: center;
-                    font-weight: bold;
-                    text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-                }
-                .news-box {
-                    padding: 15px;
-                    border-radius: 10px;
-                    background: rgba(255, 255, 255, 0.9);
-                    box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-                    color: #333;
-                    margin-bottom: 15px;
-                }
-                .news-title {
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    color: #DAA520;
-                }
-                .news-content {
-                    font-size: 1.2rem;
-                    line-height: 1.6;
-                }
-                .news-link {
-                    font-size: 1rem;
-                    font-weight: bold;
-                    color: #1E90FF;
-                }
-            </style>
-            """, unsafe_allow_html=True)
+    except Exception as e:
+        st.error(f"ตลาดปิดทำการในวันหยุด: กรุณาดูย้อนหลังมากกว่า 1 วัน")
 
-        st.markdown(f"""
-        <div style="
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.4rem;
-            color: #FFD700;
-            font-weight: bold;
-            box-shadow: 0 0 10px #000000;
-        ">
-            📰 ข่าวล่าสุดเกี่ยวกับเศรษฐกิจ <span style='color:#FFD700;
-        </div>
+def หน้าที่4():
+    st.markdown("""
+        <style>
+            .stApp {
+                background: url("") no-repeat center center fixed;
+                background-size: cover;
+                background-repeat: no-repeat;
+                color: brown;
+            }
+            .subheader {
+                font-size: 2rem;
+                color: #FFD700;
+                text-align: center;
+                font-weight: bold;
+                text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            }
+            .news-box {
+                padding: 15px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+                color: #333;
+                margin-bottom: 15px;
+            }
+            .news-title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: #DAA520;
+            }
+            .news-content {
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+            .news-link {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #1E90FF;
+            }
+        </style>
         """, unsafe_allow_html=True)
 
-        feed_urls = [
-            "https://www.ryt9.com/stock/rss.xml",
-            "https://www.ryt9.com/economy/rss.xml"
-        ]
+    st.markdown(f"""
+    <div style="
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.4rem;
+        color: #FFD700;
+        font-weight: bold;
+        box-shadow: 0 0 10px #000000;
+    ">
+        📰 ข่าวล่าสุดเกี่ยวกับเศรษฐกิจ <span style='color:#FFD700;
+    </div>
+    """, unsafe_allow_html=True)
 
-        for url in feed_urls:
-            feed = feedparser.parse(url)
-            for entry in feed.entries[:5]:
-                full_content = entry.content[0].value if "content" in entry else entry.summary  # ใช้เนื้อหาข่าวเต็มถ้ามี
-                with st.expander(f"🔍 {entry.title}"):
-                    st.markdown(f"""
-                    <div class="news-box">
-                        <div class="news-title">{entry.title}</div>
-                        <div>{full_content}</div>
-                        <a class="news-link" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
-                    </div>
-                    """, unsafe_allow_html=True)
+    feed_urls = [
+        "https://www.ryt9.com/stock/rss.xml",
+        "https://www.ryt9.com/economy/rss.xml"
+    ]
 
+    for url in feed_urls:
+        feed = feedparser.parse(url)
+        for entry in feed.entries[:10]:  # ดึง 5 ข่าวล่าสุด
+            full_content = entry.content[0].value if "content" in entry else entry.summary  # ใช้เนื้อหาข่าวเต็มถ้ามี
+            with st.expander(f"🔍 {entry.title}"):
+                st.markdown(f"""
+                <div class="news-box">
+                    <div class="news-title">{entry.title}</div>
+                    <div>{full_content}</div>
+                    <a class="news-link" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                </div>
+                """, unsafe_allow_html=True)
 
+def หน้าที่5():
+    st.markdown("""
+        <style>
+            .subheader {
+                font-size: 2rem;
+                color: #FFD700;
+                text-align: center;
+                font-weight: bold;
+                text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            }
+            .news-box {
+                padding: 15px;
+                border-radius: 10px;
+                background: rgba(255, 255, 255, 0.9);
+                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+                color: #333;
+                margin-bottom: 15px;
+            }
+            .news-title {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: #DAA520;
+            }
+            .news-content {
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+            .news-link {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #1E90FF;
+            }
+        </style>
+        """, unsafe_allow_html=True)
 
-    except Exception as e:
-        st.error(f"ไม่สามารถโหลดข้อมูลราคาทองคำได้: {e}")
+    st.markdown(f"""
+    <div style="
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.4rem;
+        color: #FFD700;
+        font-weight: bold;
+        box-shadow: 0 0 10px #000000;
+    ">
+        📰 ข่าวล่าสุดการเมืองไทย <span style='color:#FFD700;
+    </div>
+    """, unsafe_allow_html=True)
+
+    feed_urls = [
+        "https://www.ryt9.com/politics-latest/rss.xml"
+        "https://www.ryt9.com/general/rss.xml"
+    ]
+
+    for url in feed_urls:
+        feed = feedparser.parse(url)
+        for entry in feed.entries[:10]:  # ดึง 5 ข่าวล่าสุด
+            full_content = entry.content[0].value if "content" in entry else entry.summary  # ใช้เนื้อหาข่าวเต็มถ้ามี
+            with st.expander(f"🔍 {entry.title}"):
+                st.markdown(f"""
+                <div class="news-box">
+                    <div class="news-title">{entry.title}</div>
+                    <div>{full_content}</div>
+                    <a class="news-link" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                </div>
+                """, unsafe_allow_html=True)
 
 def get_random_title():
     """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
@@ -829,6 +781,7 @@ def ข่าวล่าสุด():
     ข่าว_urls = [
         "https://www.ryt9.com/stock/rss.xml",
         "https://www.ryt9.com/economy/rss.xml"
+        "https://www.ryt9.com/politics/rss.xml"
     ]
     เก็บหัวข้อข่าว = []
     for url in ข่าว_urls:
@@ -1088,6 +1041,8 @@ def main():
         "โปรไฟล์": about_ray_dream, 
         "แชทกับเรา": chatwithRay,
         "Dashboard": dashboard,
+        "ข่าวทองคำและเศรษฐกิจ": หน้าที่4,
+        "ข่าวการเมือง": หน้าที่5
     }
 
     selected_page = st.sidebar.radio("สำรวจ", list(pages.keys()))
