@@ -5,14 +5,9 @@
    ```
    $ pip install -r requirements.txt
    ```
-2. ติดตั้ง Tesseract OCR
-   
-   ```
-   $ sudo apt update
-   $ sudo apt install tesseract-ocr
-   ```
-3. Run the app
+2. Run the app
 
    ```
    $ streamlit run Rdtogether_app.py
    ```
+3.ลงเสร็จก็ไปใช้ได้เลยจากสหายเรย์
