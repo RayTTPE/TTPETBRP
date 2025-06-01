@@ -1024,6 +1024,7 @@ def chatwithRay():
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input or content:
         if upload_file is not None:
+            file_type = upload_file.type
             if upload_file.type == "text/plain":
                 content = upload_file.read().decode("utf-8")
             elif upload_file.type == "application/pdf":
@@ -1038,10 +1039,11 @@ def chatwithRay():
             elif upload_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                 doc = docx.Document(upload_file)
                 content = "\n".join([para.text for para in doc.paragraphs])
-            elif upload_file.type == "image/jpeg" or upload_file.type == "image/png":
+            elif file_type in ["image/jpeg", "image/png"]:
                 img_path = f"/tmp/{upload_file.name}"
                 with open(img_path, "wb") as f:
                     f.write(upload_file.getbuffer())
+
             elif upload_file is not None:
                 if upload_file.type in ["text/plain", "text/x-python"]:
                     lines = upload_file.read().decode("utf-8").split("\n")
