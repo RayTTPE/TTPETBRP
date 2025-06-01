@@ -289,61 +289,61 @@ def about_ray_dream():
         st.markdown("""
             <style>
                 .resume-section {
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
+                    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 215, 0, 0.6));
                     padding: 15px;
                     border-radius: 15px;
-                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+                    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
                     font-size: 2rem;
                     font-weight: bold;
-                    color: #333333;
+                    color: #FFFFFF;
                     margin-top: 20px;
                     text-align: center;
                 }
                 .resume-box {
-                    background-color: rgba(255, 255, 255, 0.7);
+                    background-color: rgba(255, 255, 255, 0.9);
                     padding: 15px;
                     border-radius: 20px;
-                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
                     color: #333333;
                     font-size: 1rem;
                     line-height: 1.6;
                 }
                 .resume-sectionA {
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
+                    background: linear-gradient(135deg, rgba(0.9, 0, 0, 0.7), rgba(255, 215, 0, 0.6));
                     padding: 15px;
                     border-radius: 15px;
-                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 6px 15px rgba(0, 0, 0, 1);
                     font-size: 2rem;
                     font-weight: bold;
-                    color: #333333;
+                    color: #FFFFFF;
                     margin-top: 20px;
-                    text-align: left;
+                    text-align: Left;
                 }
                 .resume-text {
-                    background: rgba(255, 255, 255, 0.5);
+                    background: rgba(255, 255, 255, 0.9);
                     padding: 15px;
                     border-radius: 10px;
-                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.9);
                     color: #333;
                     font-size: 1rem;
                     line-height: 1.6;
                 }
 
                 .resume-textB { 
-                    background-color: rgba(255, 255, 255, 0.6);
+                    background-color: rgba(255, 255, 255, 0.9);
                     border-radius: 10px;
                     padding: 15px;
-                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
                     color: #333;
                     font-size: 1rem;
                     line-height: 1.6;
                 }
 
                 .resume-sectionB {
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 215, 0, 0.4));
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 215, 0, 0.5));
                     padding: 15px;
                     border-radius: 10px;
-                    box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.2);
+                    box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.9);
                     color: #333;
                     font-size: 1.2rem;
                     line-height: 1.6;
@@ -1004,7 +1004,7 @@ def chatwithRay():
 
     # แสดงข้อความแบบ bubble พร้อมระบบ chat_message
     for msg in st.session_state.messages:
-        avatar_url = "https://cdn-icons-png.flaticon.com/512/847/847969.png" if msg["role"] == "user" else "./รูป/S__23592963.jpg"
+        avatar_url = "https://cdn-icons-png.flaticon.com/512/847/847969.png" if msg["role"] == "user" else "/workspaces/TTPETBRP/รูป/S__23592963.jpg"
         
         with st.chat_message(msg["role"], avatar=avatar_url):
             st.markdown(f"""
