@@ -628,39 +628,40 @@ def หน้าที่4():
     st.markdown("""
         <style>
             .stApp {
-                background: url("") no-repeat center center fixed;
+                background: url("https://images.unsplash.com/photo-1635868355594-a297d37b3494?q=80&w=3987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed;
                 background-size: cover;
-                background-repeat: no-repeat;
-                color: brown;
+                color: White
             }
             .subheader {
                 font-size: 2rem;
                 color: #FFD700;
                 text-align: center;
                 font-weight: bold;
-                text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+                text-shadow: 3px 3px 7px rgba(0,0,0,0.3);
             }
-            .news-box {
-                padding: 15px;
-                border-radius: 10px;
-                background: rgba(255, 255, 255, 0.9);
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-                color: #333;
-                margin-bottom: 15px;
+            .ข่าวในแทบ {
+                padding: 20px;
+                border-radius: 15px;
+                background: rgba(0, 0, 0, 0.7);
+                box-shadow: 0px 6px 12px rgba(0,0,0,0.2);
+                border: 2px solid rgba(255, 215, 0, 0.6);
+                color: #FFF;
+                margin-bottom: 20px;
             }
-            .news-title {
-                font-size: 1.4rem;
+            .หัวข้อข่าว {
+                font-size: 1.6rem;
                 font-weight: bold;
-                color: #DAA520;
+                color: #FFD700;
             }
             .news-content {
                 font-size: 1.2rem;
-                line-height: 1.6;
+                line-height: 1.8;
             }
-            .news-link {
+            .ลิ้งข่าว {
                 font-size: 1rem;
                 font-weight: bold;
-                color: #1E90FF;
+                color: #87CEEB;
+                text-decoration: underline;
             }
         </style>
         """, unsafe_allow_html=True)
@@ -676,95 +677,130 @@ def หน้าที่4():
         font-weight: bold;
         box-shadow: 0 0 10px #000000;
     ">
-        📰 ข่าวล่าสุดเกี่ยวกับเศรษฐกิจ <span style='color:#FFD700;
+        📰ข่าวล่าสุด🛑LIVE <span style='color:#FFD700;
     </div>
     """, unsafe_allow_html=True)
 
-    feed_urls = [
-        "https://www.ryt9.com/stock/rss.xml",
-        "https://www.ryt9.com/economy/rss.xml"
-    ]
-
-    for url in feed_urls:
-        feed = feedparser.parse(url)
-        for entry in feed.entries[:10]:  # ดึง 5 ข่าวล่าสุด
-            full_content = entry.content[0].value if "content" in entry else entry.summary  # ใช้เนื้อหาข่าวเต็มถ้ามี
-            with st.expander(f"🔍 {entry.title}"):
-                st.markdown(f"""
-                <div class="news-box">
-                    <div class="news-title">{entry.title}</div>
-                    <div>{full_content}</div>
-                    <a class="news-link" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
-                </div>
-                """, unsafe_allow_html=True)
-
-def หน้าที่5():
     st.markdown("""
         <style>
-            .subheader {
-                font-size: 2rem;
-                color: #FFD700;
-                text-align: center;
-                font-weight: bold;
-                text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            }
-            .news-box {
-                padding: 15px;
-                border-radius: 10px;
-                background: rgba(255, 255, 255, 0.9);
-                box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-                color: #333;
-                margin-bottom: 15px;
-            }
-            .news-title {
-                font-size: 1.4rem;
-                font-weight: bold;
-                color: #DAA520;
-            }
-            .news-content {
-                font-size: 1.2rem;
-                line-height: 1.6;
-            }
-            .news-link {
-                font-size: 1rem;
-                font-weight: bold;
-                color: #1E90FF;
+            .stApp {
+                background: url("https://images.unsplash.com/photo-1635868355594-a297d37b3494?q=80&w=3987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed;
+                background-size: cover;
+                color: White;
             }
         </style>
-        """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div style="
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 10px;
-        border-radius: 10px;
-        text-align: center;
-        font-size: 1.4rem;
-        color: #FFD700;
-        font-weight: bold;
-        box-shadow: 0 0 10px #000000;
-    ">
-        📰 ข่าวล่าสุดการเมืองไทย <span style='color:#FFD700;
-    </div>
     """, unsafe_allow_html=True)
 
-    feed_urls = [
-        "https://www.ryt9.com/politics-latest/rss.xml"
-        "https://www.ryt9.com/general/rss.xml"
-    ]
+    # -- สร้างแท็บด้านบนภายในหน้า --
+    tabs = st.tabs(["🪙 เศรษฐกิจ", "🏛️ ข่าวการเมือง","SPORT⚽", "📰ทั่วไป", "TECHNOLOGY🚀" ,"✈️ท่องเที่ยว"])
 
-    for url in feed_urls:
-        feed = feedparser.parse(url)
-        for entry in feed.entries[:10]:  # ดึง 5 ข่าวล่าสุด
-            full_content = entry.content[0].value if "content" in entry else entry.summary  # ใช้เนื้อหาข่าวเต็มถ้ามี
-            with st.expander(f"🔍 {entry.title}"):
-                st.markdown(f"""
-                <div class="news-box">
-                    <div class="news-title">{entry.title}</div>
-                    <div>{full_content}</div>
-                    <a class="news-link" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
-                </div>
-                """, unsafe_allow_html=True)
+    with tabs[0]:  # ข่าวเศรษฐกิจ
+        st.markdown("<h2 class='subheader'>📈 ข่าวเศรษฐกิจ</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/stock/rss.xml",
+            "https://www.ryt9.com/economy/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                        <div class="ข่าวในแทบ">
+                            <div class="หัวข้อข่าว">{entry.title}</div>
+                            <div>{full_content}</div>
+                            <a class="ลิ้งข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+    with tabs[1]:
+        st.markdown("<h2 class='subheader'>🌍 ข่าวการเมือง 🇹🇭</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/politics-latest/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                        <div class="ข่าวในแทบ">
+                            <div class="หัวข้อข่าว">{entry.title}</div>
+                            <div>{full_content}</div>
+                            <a class="ลิ้งข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                        </div>
+                    """, unsafe_allow_html=True)
+    with tabs[2]:
+        st.markdown("<h2 class='subheader'>ข่าวกีฬา🏆</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/sports/rss.xml/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                    <div class="news-box">
+                        <div class="หัวข้อ">{entry.title}</div>
+                        <div>{full_content}</div>
+                        <a class="ข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                    </div>
+                    """, unsafe_allow_html=True)
+    with tabs[3]:
+        st.markdown("<h2 class='subheader'>📢ข่าวทั่วไป</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/general/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                    <div class="news-box">
+                        <div class="หัวข้อ">{entry.title}</div>
+                        <div>{full_content}</div>
+                        <a class="ข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+    with tabs[4]:
+        st.markdown("<h2 class='subheader'>💻เทคโนโลยีและยานยนต์</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/technology/rss.xml",
+            "https://www.ryt9.com/motor/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                    <div class="news-box">
+                        <div class="หัวข้อ">{entry.title}</div>
+                        <div>{full_content}</div>
+                        <a class="ข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+    with tabs[5]:
+        st.markdown("<h2 class='subheader'>🥥🌴🌺🌅🌊</h2>", unsafe_allow_html=True)
+        feed_urls = [
+            "https://www.ryt9.com/travel/rss.xml"
+        ]
+        for url in feed_urls:
+            feed = feedparser.parse(url)
+            for entry in feed.entries[:10]:
+                full_content = entry.content[0].value if "content" in entry else entry.summary
+                with st.expander(f"🔍 {entry.title}"):
+                    st.markdown(f"""
+                    <div class="news-box">
+                        <div class="หัวข้อ">{entry.title}</div>
+                        <div>{full_content}</div>
+                        <a class="ข่าว" href="{entry.link}" target="_blank">🔗 อ่านเพิ่มเติม</a>
+                    </div>
+                    """, unsafe_allow_html=True)
 
 def get_random_title():
     """ฟังก์ชันสำหรับสุ่มข้อความหัวข้อ"""
@@ -794,7 +830,7 @@ def ราคาทอง():
     try:
         # ดึงราคาทอง Spot
         ทอง = yf.Ticker("GC=F")
-        data = ทอง.history(period="1d", interval="1m")
+        data = ทอง.history(period="3d", interval="1h")
         if data.empty or data["Close"].isnull().all():
             return "❌ ไม่สามารถดึงข้อมูลราคาทองคำได้ในขณะนี้"
 
@@ -802,7 +838,7 @@ def ราคาทอง():
 
         # ดึงค่าเงินบาท
         บาท = yf.Ticker("THB=X")
-        U_data = บาท.history(period="1d", interval="1m")
+        U_data = บาท.history(period="3d", interval="1h")
         if U_data.empty or U_data["Close"].isnull().all():
             return f"💰 ราคาทอง Spot: ${ราคาต่อUSD:.2f} USD\n⚠️ ไม่สามารถดึงค่าเงินบาทได้"
 
@@ -838,23 +874,41 @@ def GDT():
 
 def create_prompt(messages):
     """
-    สร้าง prompt ความจำของระบบจากประวัติการสนทนา
+    สร้าง prompt ความจำของระบบจากประวัติการสนทนาของไบร์ทกับผู้สร้าง เล้ง
     """
     prompt = get_prompt()
 
     ข่าว = ข่าวล่าสุด()
     ทอง = ราคาทอง()
     วันเวลา = GDT()
+    Bitcoin = ราคาบิทคอย()
 
     prompt += f"📅 วันที่ปัจจุบัน: {วันเวลา}\n\n"
     prompt += f"📰 ข้อมูลข่าวล่าสุด:\n{ข่าว}\n\n"
     prompt += f"ราคาทองล่าสุด:\n{ทอง}\n\n"
+    prompt += f"ราคาบิทคอยล่าสุด:\n{Bitcoin}\n\n"
 
     for msg in messages:
         role = "ผู้ใช้" if msg["role"] == "user" else "ผู้ช่วย"
         prompt += f"{role}: {msg['content']}\n"
     prompt += "ผู้ช่วย: "
     return prompt
+
+
+def ราคาบิทคอย():
+    try:
+        BTC = yf.Ticker("BTC-USD")
+        data = BTC.history(period="3d", interval="1h")
+        if data.empty or data["Close"].isnull().all():
+            return "❌ วันนี้วันหยุดฉันไม่สามารถดึงข้อมูลราคาทองคำได้ในขณะนี้"
+
+        ราคาต่อUSD = data["Close"].dropna().iloc[-1]
+        return (
+            f"📈 ราคาBTC: ${ราคาต่อUSD:,.2f} USD\n"
+        )
+
+    except Exception as e:
+        return f"❌ เกิดข้อผิดพลาดในการดึงข้อมูลราคาทอง: {e}"
 
 def chatwithRay():
     st.markdown(
@@ -864,7 +918,7 @@ def chatwithRay():
                 background: url("https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGVhcnRoJTIwYW5kJTIwc3RhcnN8ZW58MHx8fHwxNjk2OTU0NTcx&ixlib=rb-4.0.3&q=80&w=1080") no-repeat center center fixed;
                 background-size: cover;
                 background-repeat: no-repeat;
-                color: brown;
+                color: black;
             }
             .stMarkdown {
                 font-size: 1.2rem;
@@ -918,9 +972,55 @@ def chatwithRay():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
+    # แทรก CSS สไตล์สำหรับ chat bubble
+    st.markdown("""
+        <style>
+            .element-container:has(.chat-message) {
+                padding: 8px 12px;
+            }
+
+            .stChatMessageContent {
+                background-color: rgba(255,255,255,0.1);
+                padding: 12px 18px;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                line-height: 1.6;
+                box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
+            }
+
+            [data-testid="chat-message-user"] .stChatMessageContent {
+                background-color: rgba(255, 215, 0, 0.15);
+                color: #FFD700;
+                font-weight: bold;
+            }
+
+            [data-testid="chat-message-assistant"] .stChatMessageContent {
+                background-color: rgba(135, 206, 235, 0.15);
+                color: #87CEEB;
+                font-weight: bold;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # แสดงข้อความแบบ bubble พร้อมระบบ chat_message
     for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
+        avatar_url = "https://cdn-icons-png.flaticon.com/512/847/847969.png" if msg["role"] == "user" else "/workspaces/TTPETBRP/รูป/S__23592963.jpg"
+        
+        with st.chat_message(msg["role"], avatar=avatar_url):
+            st.markdown(f"""
+                <div style='
+                    background-color: {"rgba(255, 215, 0, 0.1)" if msg["role"] == "user" else "rgba(135, 206, 235, 0.15)"};
+                    color: {"#FFD700" if msg["role"] == "user" else "#87CEEB"};
+                    padding: 14px 18px;
+                    border-radius: 12px;
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    line-height: 1.6;
+                    box-shadow: 0px 2px 6px rgba(0,0,0,0.3);
+                '>
+                    {msg["content"]}
+                </div>
+            """, unsafe_allow_html=True)
     
     user_input = st.chat_input("พิมพ์ข้อความของคุณที่นี่...")
     if user_input or content:
@@ -988,8 +1088,8 @@ def chat(messages):
                 "messages": messages,
                 "model": model,
                 "max_token": 2000,
-                "temperature": 1.2,
-                "top_p": 0.99,
+                "temperature": 0.8,
+                "top_p": 0.98,
                 "top_k": 40,
                 "repetition_penalty": 1.9,
             },
@@ -1023,9 +1123,9 @@ def chat_with_model(prompt):
                 "prompt": prompt,
                 "model": model,
                 "max_token": 2000,
-                "temperature": 1.2,
-                "top_p": 0.99,
-                "top_k": 40,
+                "temperature": 2,
+                "top_p": 0.85,
+                "top_k": 25,
                 "repetition_penalty": 1.9,
             },
         )
@@ -1041,39 +1141,33 @@ def main():
         "โปรไฟล์": about_ray_dream, 
         "แชทกับเรา": chatwithRay,
         "Dashboard": dashboard,
-        "ข่าวทองคำและเศรษฐกิจ": หน้าที่4,
-        "ข่าวการเมือง": หน้าที่5
+        "ข่าวล่าสุด": หน้าที่4,
     }
 
     selected_page = st.sidebar.radio("สำรวจ", list(pages.keys()))
     st.sidebar.markdown(
         """
         <style>
-        /* เปลี่ยนสีพื้นหลังของ Sidebar */
         [data-testid="stSidebar"] {
             background-color: #2E4053;
             color: chocolate;
         }
 
-        /* ปรับแต่งข้อความใน Sidebar */
         [data-testid="stSidebar"] .sidebar-text {
             font-size: 1rem;
             font-weight: bold;
             color: #F7DC6F;
         }
 
-        /* ปรับแต่งปุ่ม Radio */
         [data-testid="stSidebar"] .stRadio > label {
             font-size: 5rem;
             color: #FFFF00;
         }
 
-        /* ปรับแต่งรูปภาพใน Sidebar */
         [data-testid="stSidebar"] img {
             border-radius: 10px;
             margin-bottom: 10px;
         }
-        /* ปรับแต่งข้อความใน Sidebar */
         [data-testid="stSidebar"] .sidebar-title {
             font-size: 2rem;
             font-weight: bold;
