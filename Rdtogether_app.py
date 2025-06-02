@@ -271,7 +271,7 @@ def about_ray_dream():
     """
     <style>
         .stApp {
-            background: url("https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed;
+            background: url("") no-repeat center center fixed;
             background-size: cover;
         }
     </style>
@@ -538,7 +538,6 @@ def dashboard():
 
     st.session_state.show_animation = True
 
-    # แสดง Particle Animation
     if st.session_state.show_animation:
         components.html(particles_js, height=370, scrolling=False)
 
@@ -1176,11 +1175,31 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-    st.sidebar.markdown(
-        """
+    particles_js = """
+    <div id="particles-js"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
+                "color": {"value": "#ffffff"},
+                "shape": {"type": "circle"},
+                "opacity": {"value": 0.5},
+                "size": {"value": 2, "random": true},
+                "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
+                "move": {"enable": true, "speed": 0.2, "direction": "none"}
+            },
+            "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+        });
+    </script>
+    """
 
-        """
-    )
+    st.sidebar.markdown("---")
+
+    # วาง effect ใน sidebar
+    with st.sidebar:
+        components.html(particles_js, height=370, scrolling=False)
+
     pages[selected_page]()
 st.sidebar.image("รูป/DR.jpg", width=150)
 st.sidebar.markdown(
