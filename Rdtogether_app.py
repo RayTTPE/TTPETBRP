@@ -289,7 +289,7 @@ def about_ray_dream():
         st.markdown("""
             <style>
                 .resume-section {
-                    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(255, 215, 0, 0.6));
+                    background: linear-gradient(135deg, rgba(255, 0, 150, 0.8), rgba(0, 255, 200, 0.7));
                     padding: 15px;
                     border-radius: 15px;
                     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
@@ -300,7 +300,7 @@ def about_ray_dream():
                     text-align: center;
                 }
                 .resume-box {
-                    background-color: rgba(255, 255, 255, 0.9);
+                    background-color: rgba(255, 255, 255, 5);
                     padding: 15px;
                     border-radius: 20px;
                     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
@@ -309,7 +309,7 @@ def about_ray_dream():
                     line-height: 1.6;
                 }
                 .resume-sectionA {
-                    background: linear-gradient(135deg, rgba(0.9, 0, 0, 0.7), rgba(255, 215, 0, 0.6));
+                    background: linear-gradient(135deg, rgba(150, 0, 0, 0.6), rgba(255, 200, 0, 0.5));
                     padding: 15px;
                     border-radius: 15px;
                     box-shadow: 0px 6px 15px rgba(0, 0, 0, 1);
@@ -320,7 +320,7 @@ def about_ray_dream():
                     text-align: Left;
                 }
                 .resume-text {
-                    background: rgba(255, 255, 255, 0.9);
+                    background: rgba(255, 255, 255, 5);
                     padding: 15px;
                     border-radius: 10px;
                     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.9);
@@ -340,7 +340,7 @@ def about_ray_dream():
                 }
 
                 .resume-sectionB {
-                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 215, 0, 0.5));
+                    background: linear-gradient(135deg, rgba(0, 180, 100, 0.7), rgba(100, 200, 255, 0.6));
                     padding: 15px;
                     border-radius: 10px;
                     box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.9);
