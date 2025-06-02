@@ -517,39 +517,8 @@ def dashboard():
         }
     </style>
     """, unsafe_allow_html=True)
-    particles_js = """
-    <div style="position: relative; width: 100%; height: 370px;">
-        <div id="particles-js" style="position: absolute; width: 100%; height: 100%;"></div>
-        
-        <div style="position: absolute; width: 100%; top: 50%; transform: translateY(-50%); 
-                    text-align: center; font-size: 24px; font-weight: bold; color: white; z-index: 2;">
-            📊 Real-Time Gold Spot Dashboard
-        </div>
-        
-        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-        <script>
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
-                    "color": {"value": "#ffffff"},
-                    "shape": {"type": "circle"},
-                    "opacity": {"value": 0.5},
-                    "size": {"value": 2, "random": true},
-                    "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
-                    "move": {"enable": true, "speed": 0.2, "direction": "none"}
-                },
-                "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
-            });
-        </script>
-    </div>
-    """
 
-    if "show_animation" not in st.session_state:
-        st.session_state.show_animation = True
-
-    if st.session_state.show_animation:
-        components.html(particles_js, height=370, scrolling=False)
-
+    st.title("📊 Real-Time Gold Spot Dashboard")
     st_autorefresh(interval=60000, key="refresh_gold")
 
     st.subheader("📈 กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
@@ -628,7 +597,38 @@ def dashboard():
         )
 
         st.plotly_chart(fig, use_container_width=True)
-        st.success(f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
+
+        particles_js = """
+        <div style="position: relative; width: 100%; height: 370px;">
+            <div id="particles-js" style="position: absolute; width: 100%; height: 100%;"></div>
+            
+            <!-- กล่องข้อความราคาทองคำ -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        text-align: center; font-size: 18px; font-weight: bold; color: #FFFFFF;
+                        background-color: rgba(0, 160, 0, 0.4); padding: 8px; border-radius: 5px;
+                        box-shadow: 0px 0px 8px rgba(0, 255, 0, 0.3);">
+                {price_text}
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+            <script>
+                particlesJS("particles-js", {
+                    "particles": {
+                        "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
+                        "color": {"value": "#ffffff"},
+                        "shape": {"type": "circle"},
+                        "opacity": {"value": 0.5},
+                        "size": {"value": 2, "random": true},
+                        "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
+                        "move": {"enable": true, "speed": 0.2, "direction": "none"}
+                    },
+                    "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+                });
+            </script>
+        </div>
+        """.replace("{price_text}", f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
+
+        components.html(particles_js, height=370, scrolling=False)
 
     except Exception as e:
         st.error(f"ตลาดปิดทำการในวันหยุด: กรุณาดูย้อนหลัง 3 วัน")
