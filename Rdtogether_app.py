@@ -289,13 +289,13 @@ def about_ray_dream():
         st.markdown("""
             <style>
                 .resume-section {
-                    background: linear-gradient(135deg, rgba(255, 0, 150, 0.8), rgba(0, 255, 200, 0.7));
+                    background: linear-gradient(135deg, rgba(138, 43, 226, 0.7), rgba(30, 144, 255, 0.6));
                     padding: 15px;
                     border-radius: 15px;
                     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
                     font-size: 2rem;
                     font-weight: bold;
-                    color: #FFFFFF;
+                    color: White;
                     margin-top: 20px;
                     text-align: center;
                 }
@@ -309,7 +309,7 @@ def about_ray_dream():
                     line-height: 1.6;
                 }
                 .resume-sectionA {
-                    background: linear-gradient(135deg, rgba(150, 0, 0, 0.6), rgba(255, 200, 0, 0.5));
+                    background: linear-gradient(135deg, rgba(0, 0, 139, 0.8), rgba(135, 206, 250, 0.6));
                     padding: 15px;
                     border-radius: 15px;
                     box-shadow: 0px 6px 15px rgba(0, 0, 0, 1);
@@ -340,11 +340,11 @@ def about_ray_dream():
                 }
 
                 .resume-sectionB {
-                    background: linear-gradient(135deg, rgba(0, 180, 100, 0.7), rgba(100, 200, 255, 0.6));
+                    background: linear-gradient(135deg, rgba(135, 206, 250, 0.8), rgba(0, 255, 127, 0.6));
                     padding: 15px;
                     border-radius: 10px;
                     box-shadow: 0px 6px 12px rgba(255, 215, 0, 0.9);
-                    color: #333;
+                    color: white;
                     font-size: 1.2rem;
                     line-height: 1.6;
                 }
@@ -518,30 +518,38 @@ def dashboard():
     </style>
     """, unsafe_allow_html=True)
     particles_js = """
-    <div id="particles-js"></div>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
-                "color": {"value": "#ffffff"},
-                "shape": {"type": "circle"},
-                "opacity": {"value": 0.5},
-                "size": {"value": 2, "random": true},
-                "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
-                "move": {"enable": true, "speed": 0.2, "direction": "none"}
-            },
-            "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
-        });
-    </script>
+    <div style="position: relative; width: 100%; height: 370px;">
+        <div id="particles-js" style="position: absolute; width: 100%; height: 100%;"></div>
+        
+        <div style="position: absolute; width: 100%; top: 50%; transform: translateY(-50%); 
+                    text-align: center; font-size: 24px; font-weight: bold; color: white; z-index: 2;">
+            📊 Real-Time Gold Spot Dashboard
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script>
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
+                    "color": {"value": "#ffffff"},
+                    "shape": {"type": "circle"},
+                    "opacity": {"value": 0.5},
+                    "size": {"value": 2, "random": true},
+                    "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
+                    "move": {"enable": true, "speed": 0.2, "direction": "none"}
+                },
+                "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+            });
+        </script>
+    </div>
     """
 
-    st.session_state.show_animation = True
+    if "show_animation" not in st.session_state:
+        st.session_state.show_animation = True
 
     if st.session_state.show_animation:
         components.html(particles_js, height=370, scrolling=False)
 
-    st.title("📊 Real-Time Gold Spot Dashboard")
     st_autorefresh(interval=60000, key="refresh_gold")
 
     st.subheader("📈 กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
@@ -1195,8 +1203,6 @@ def main():
         }, 1000);  // หน่วงเวลา 1 วินาทีก่อนเริ่มทำงาน
     </script>
     """
-
-    st.sidebar.markdown("---")
     with st.sidebar:
         components.html(particles_js, height=370, scrolling=False) 
 
@@ -1206,7 +1212,7 @@ st.sidebar.markdown(
     """
     <style>
         [data-testid="stSidebar"] {
-            background-image: url("https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDF8fGZvcmVzdHxlbnwwfHx8fDE2OTY5NTQ1NzE&ixlib=rb-4.0.3&q=80&w=1080");
+            background-image: url("https://images.pexels.com/photos/1175136/pexels-photo-1175136.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
             background-size: cover;
             background-repeat: no-repeat;
             background-attachment: fixed;
