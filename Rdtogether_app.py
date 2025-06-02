@@ -1179,26 +1179,26 @@ def main():
     <div id="particles-js"></div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
-                "color": {"value": "#ffffff"},
-                "shape": {"type": "circle"},
-                "opacity": {"value": 0.5},
-                "size": {"value": 2, "random": true},
-                "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
-                "move": {"enable": true, "speed": 0.2, "direction": "none"}
-            },
-            "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
-        });
+        setTimeout(function() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
+                    "color": {"value": "#ffffff"},
+                    "shape": {"type": "circle"},
+                    "opacity": {"value": 0.5},
+                    "size": {"value": 2, "random": true},
+                    "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
+                    "move": {"enable": true, "speed": 0.2, "direction": "none"}
+                },
+                "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+            });
+        }, 1000);  // หน่วงเวลา 1 วินาทีก่อนเริ่มทำงาน
     </script>
     """
 
     st.sidebar.markdown("---")
-
-    # วาง effect ใน sidebar
     with st.sidebar:
-        components.html(particles_js, height=370, scrolling=False)
+        components.html(particles_js, height=370, scrolling=False) 
 
     pages[selected_page]()
 st.sidebar.image("รูป/DR.jpg", width=150)
