@@ -488,20 +488,26 @@ def about_ray_dream():
     </div>
     """, unsafe_allow_html=True)
 
-import yfinance as yf
+import streamlit as st
 import pandas as pd
+import requests
 import plotly.graph_objects as go
 from streamlit_autorefresh import st_autorefresh
+import datetime as dt
 import pytz
+import streamlit.components.v1 as components
+import os
 from datetime import datetime
 import feedparser
+
+HISTORY_CSV = "gold_price_history.csv"
 
 def dashboard():
     st.markdown("""
     <style>
         .stMarkdown {
             font-size: 1.4rem;
-            color: #FFD700; /* สีทอง */
+            color: #FFD700;
             text-align: left;
             font-weight: bold;
         }
@@ -518,120 +524,114 @@ def dashboard():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("📊 Real-Time Gold Spot Dashboard")
+    st.title("Real-Time Gold Spot Dashboard")
     st_autorefresh(interval=60000, key="refresh_gold")
 
-    st.subheader("📈 กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
+    st.subheader("กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
 
     try:
-        range_options = {
-            "1 นาที": ("1d", "1m"),
-            "5 นาที": ("1d", "5m"),
-            "15 นาที": ("1d", "15m"),
-            "30 นาที": ("1d", "30m"),
-            "1 ชั่วโมง": ("1d", "1h"),
-            "1 วัน": ("1d", "4h"),
-            "3 วัน": ("3d", "4h"),
-            "7 วัน": ("7d", "4h"),
-            "30 วัน": ("30d", "4h"),
-            "90 วัน": ("90d", "4h"),
-            "180 วัน": ("180d", "4h"),
-            "1 ปี": ("1y", "4h"),
-            "2 ปี": ("2y", "4h"),
+        API_KEY = "goldapi-aw5jvhsmdy7ig4s-io"
+        headers = {
+            "x-access-token": API_KEY,
+            "Content-Type": "application/json"
         }
+        url = "https://www.goldapi.io/api/XAU/USD"
+        response = requests.get(url, headers=headers)
+        data = response.json()
 
-        selected_range = st.selectbox("เลือกช่วงเวลาย้อนหลัง:", list(range_options.keys()))
-        period, interval = range_options[selected_range]
+        price_now = data["price"]
+        prev_close = data.get("prev_close_price", price_now)
+        price_diff = price_now - prev_close
+        price_pct = (price_diff / prev_close) * 100 if prev_close != 0 else 0
 
-        chart_type = st.selectbox("เลือกประเภทกราฟ:", ["เส้น", "แท่งเทียน"])
+        now = dt.datetime.now(pytz.timezone("Asia/Bangkok"))
+        time_label = now.strftime("%Y-%m-%d %H:%M:%S")
 
-        gold = yf.Ticker("GC=F")
-        hist = gold.history(period=period, interval=interval)
-        hist = hist.reset_index()
+        # Save to CSV
+        new_row = pd.DataFrame({"Time": [time_label], "Price": [price_now]})
+        if os.path.exists(HISTORY_CSV):
+            old_df = pd.read_csv(HISTORY_CSV)
+            df_all = pd.concat([old_df, new_row], ignore_index=True).drop_duplicates("Time", keep="last")
+        else:
+            df_all = new_row
+        df_all.to_csv(HISTORY_CSV, index=False)
 
-        if hist['Datetime'].dt.tz is None:
-            hist['Datetime'] = hist['Datetime'].dt.tz_localize('UTC')
-        hist['Datetime'] = hist['Datetime'].dt.tz_convert('Asia/Bangkok')
+        # Parse and convert to datetime
+        df_all["Time"] = pd.to_datetime(df_all["Time"])
 
-        price_now = hist['Close'].iloc[-1]
-        price_prev = hist['Close'].iloc[0]
-        price_diff = price_now - price_prev
-        price_pct = (price_diff / price_prev) * 100
-        fig = go.Figure()
+        # User selects date range
+        st.markdown("## เลือกช่วงเวลาแสดงกราฟ")
+        min_date = df_all["Time"].min().date()
+        max_date = df_all["Time"].max().date()
+        date_range = st.date_input("เลือกวันย้อนหลัง:", [max_date, max_date], min_value=min_date, max_value=max_date)
+
+        if len(date_range) == 2:
+            start_date = pd.to_datetime(date_range[0])
+            end_date = pd.to_datetime(date_range[1]) + pd.Timedelta(days=1)
+            df_filtered = df_all[(df_all["Time"] >= start_date) & (df_all["Time"] < end_date)]
+        else:
+            df_filtered = df_all[df_all["Time"].dt.date == max_date]
 
         change_color = "#00FF00" if price_pct >= 0 else "#FF6347"
         st.markdown(f"""
-        <div style="
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.4rem;
-            color: {change_color};
-            font-weight: bold;
-            box-shadow: 0 0 10px #000000;
-        ">
-            การเปลี่ยนแปลงในช่วง <span style='color:#FFD700;'>{selected_range}</span>: {price_pct:+.2f}%
+        <div style='background-color: rgba(0, 0, 0, 0.6); padding: 10px; border-radius: 10px;
+                    text-align: center; font-size: 1.4rem; color: {change_color}; font-weight: bold;
+                    box-shadow: 0 0 10px #000000;'>
+            การเปลี่ยนแปลง: {price_pct:+.2f}%
         </div>
         """, unsafe_allow_html=True)
 
-
-        if chart_type == "แท่งเทียน":
-            fig.add_trace(go.Candlestick(
-                x=hist['Datetime'],
-                open=hist['Open'],
-                high=hist['High'],
-                low=hist['Low'],
-                close=hist['Close'],
-                name="Gold Spot"
-            ))
-        else:
-            fig.add_trace(go.Scatter(x=hist['Datetime'], y=hist['Close'], mode='lines', name='Gold Spot'))
-
+        # Chart
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df_filtered["Time"], y=df_filtered["Price"], mode="lines", name="Gold Spot"))
         fig.update_layout(
-            title=f"ราคาทองคำ Spot ({selected_range})",
-            xaxis_title="ตามเวลา(ประเทศไทย)",
+            title="ราคาทองคำ Spot แบบกราฟเส้น",
+            xaxis_title="เวลา",
             yaxis_title="USD",
             template="plotly_dark",
-            font=dict(size=14, color="#FFD700")
+            font=dict(size=14, color="#FFD700"),
+            xaxis=dict(tickformat="%Y-%m-%d %H:%M:%S")
         )
-
         st.plotly_chart(fig, use_container_width=True)
 
-        particles_js = """
-        <div style="position: relative; width: 100%; height: 370px;">
-            <div id="particles-js" style="position: absolute; width: 100%; height: 100%;"></div>
-            
-            <!-- กล่องข้อความราคาทองคำ -->
-            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        # Price Box Overlay
+        price_text_html = f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD"
+        particles_html = """
+        <div style='position: relative; width: 100%; height: 370px;'>
+            <div id='particles-js' style='position: absolute; width: 100%; height: 100%;'></div>
+            <div style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
                         text-align: center; font-size: 18px; font-weight: bold; color: #FFFFFF;
                         background-color: rgba(0, 160, 0, 0.4); padding: 8px; border-radius: 5px;
-                        box-shadow: 0px 0px 8px rgba(0, 255, 0, 0.3);">
-                {price_text}
+                        box-shadow: 0px 0px 8px rgba(0, 255, 0, 0.3);'>
+                """ + price_text_html + """
             </div>
-            
-            <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+            <script src='https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js'></script>
             <script>
-                particlesJS("particles-js", {
-                    "particles": {
-                        "number": {"value": 300, "density": {"enable": true, "value_area": 800}},
-                        "color": {"value": "#ffffff"},
-                        "shape": {"type": "circle"},
-                        "opacity": {"value": 0.5},
-                        "size": {"value": 2, "random": true},
-                        "line_linked": {"enable": true, "distance": 100, "color": "#ffffff", "opacity": 0.22, "width": 1},
-                        "move": {"enable": true, "speed": 0.2, "direction": "none"}
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 300, density: { enable: true, value_area: 800 } },
+                        color: { value: '#ffffff' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.5 },
+                        size: { value: 2, random: true },
+                        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.22, width: 1 },
+                        move: { enable: true, speed: 0.2, direction: 'none' }
                     },
-                    "interactivity": {"detect_on": "canvas", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": true, "mode": "repulse"}}}
+                    interactivity: {
+                        detect_on: 'canvas',
+                        events: {
+                            onhover: { enable: true, mode: 'grab' },
+                            onclick: { enable: true, mode: 'repulse' }
+                        }
+                    }
                 });
             </script>
         </div>
-        """.replace("{price_text}", f"ราคาทองคำล่าสุด: ${price_now:,.2f} USD")
-
-        components.html(particles_js, height=370, scrolling=False)
+        """
+        components.html(particles_html, height=370, scrolling=False)
 
     except Exception as e:
-        st.error(f"ตลาดปิดทำการในวันหยุด: กรุณาดูย้อนหลัง 3 วัน")
+        st.error(f"เกิดข้อผิดพลาด: {str(e)}")
 
 def หน้าที่4():
     st.markdown("""
