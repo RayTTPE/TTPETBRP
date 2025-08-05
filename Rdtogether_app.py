@@ -13,7 +13,7 @@ import os
 from memory import get_prompt
 
 API_KEY = "AIzaSyDQ3dBumcz0BtrV9a6Zj68pl8N4C9_8b74"
-ollama_url = "https://4de7-171-7-34-62.ngrok-free.app/v1/chat/completions"
+ollama_url = "https://ecf1551bb2f5.ngrok-free.app/v1/chat/completions"
 model = "gemma3:12b"
 
 config = {
@@ -488,7 +488,7 @@ def about_ray_dream():
     </div>
     """, unsafe_allow_html=True)
 
-import streamlit as st
+import yfinance as yf
 import pandas as pd
 import requests
 import plotly.graph_objects as go
@@ -501,6 +501,7 @@ from datetime import datetime
 import feedparser
 
 HISTORY_CSV = "gold_price_history.csv"
+
 
 def dashboard():
     st.markdown("""
@@ -530,48 +531,51 @@ def dashboard():
     st.subheader("กราฟราคาทองคำ Spot (XAU/USD)", anchor=False)
 
     try:
-        API_KEY = "goldapi-aw5jvhsmdy7ig4s-io"
-        headers = {
-            "x-access-token": API_KEY,
-            "Content-Type": "application/json"
-        }
-        url = "https://www.goldapi.io/api/XAU/USD"
-        response = requests.get(url, headers=headers)
+        # ดึงข้อมูลจาก Swissquote
+        url = "https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD"
+        response = requests.get(url)
         data = response.json()
 
-        price_now = data["price"]
-        prev_close = data.get("prev_close_price", price_now)
-        price_diff = price_now - prev_close
-        price_pct = (price_diff / prev_close) * 100 if prev_close != 0 else 0
+        # คำนวณราคาทองคำล่าสุด
+        bid_price = float(data[0]["spreadProfilePrices"][0]["bid"])
+        ask_price = float(data[0]["spreadProfilePrices"][0]["ask"])
+        price_now = (bid_price + ask_price) / 2
+        
 
+        # เวลาปัจจุบัน
         now = dt.datetime.now(pytz.timezone("Asia/Bangkok"))
         time_label = now.strftime("%Y-%m-%d %H:%M:%S")
 
-        # Save to CSV
+        # โหลดข้อมูลเก่าและรวมกับข้อมูลใหม่
         new_row = pd.DataFrame({"Time": [time_label], "Price": [price_now]})
         if os.path.exists(HISTORY_CSV):
             old_df = pd.read_csv(HISTORY_CSV)
             df_all = pd.concat([old_df, new_row], ignore_index=True).drop_duplicates("Time", keep="last")
         else:
             df_all = new_row
+
+        # คำนวณราคาก่อนหน้า
+        prev_close = df_all["Price"].iloc[-2] if len(df_all) > 1 else price_now
+        price_diff = price_now - prev_close
+        price_pct = (price_diff / prev_close) * 100 if prev_close != 0 else 0
+
+        # บันทึกลง CSV
         df_all.to_csv(HISTORY_CSV, index=False)
 
-        # Parse and convert to datetime
+        # แปลงเวลา
         df_all["Time"] = pd.to_datetime(df_all["Time"])
+        df_all.set_index("Time", inplace=True)
 
-        # User selects date range
-        st.markdown("## เลือกช่วงเวลาแสดงกราฟ")
-        min_date = df_all["Time"].min().date()
-        max_date = df_all["Time"].max().date()
-        date_range = st.date_input("เลือกวันย้อนหลัง:", [max_date, max_date], min_value=min_date, max_value=max_date)
+        # เลือกกรอบเวลา
+        st.markdown("## เลือกกรอบเวลาแสดงกราฟ")
+        timeframe = st.selectbox("กรอบเวลา", ["1Min", "15Min", "30Min", "1H", "4H", "1D", "1W", "1M"])
+        resample_map = {
+            "1Min": "1T", "15Min": "15T", "30Min": "30T", "1H": "1H",
+            "4H": "4H", "1D": "1D", "1W": "1W", "1M": "1M"
+        }
+        df_resampled = df_all["Price"].resample(resample_map[timeframe]).mean().dropna().reset_index()
 
-        if len(date_range) == 2:
-            start_date = pd.to_datetime(date_range[0])
-            end_date = pd.to_datetime(date_range[1]) + pd.Timedelta(days=1)
-            df_filtered = df_all[(df_all["Time"] >= start_date) & (df_all["Time"] < end_date)]
-        else:
-            df_filtered = df_all[df_all["Time"].dt.date == max_date]
-
+        # แสดงการเปลี่ยนแปลง
         change_color = "#00FF00" if price_pct >= 0 else "#FF6347"
         st.markdown(f"""
         <div style='background-color: rgba(0, 0, 0, 0.6); padding: 10px; border-radius: 10px;
@@ -581,11 +585,11 @@ def dashboard():
         </div>
         """, unsafe_allow_html=True)
 
-        # Chart
+        # สร้างกราฟ
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=df_filtered["Time"], y=df_filtered["Price"], mode="lines", name="Gold Spot"))
+        fig.add_trace(go.Scatter(x=df_resampled["Time"], y=df_resampled["Price"], mode="lines", name="Gold Spot"))
         fig.update_layout(
-            title="ราคาทองคำ Spot แบบกราฟเส้น",
+            title=f"ราคาทองคำ Spot ({timeframe})",
             xaxis_title="เวลา",
             yaxis_title="USD",
             template="plotly_dark",
@@ -632,6 +636,7 @@ def dashboard():
 
     except Exception as e:
         st.error(f"เกิดข้อผิดพลาด: {str(e)}")
+
 
 def หน้าที่4():
     st.markdown("""
@@ -836,15 +841,26 @@ def ข่าวล่าสุด():
             เก็บหัวข้อข่าว.append(f"- {entry.title.strip()}")
     return "\n".join(เก็บหัวข้อข่าว)
 
+def get_gold_spot_price():
+    """ดึงราคาทองคำ Spot ล่าสุดจาก Swissquote"""
+    try:
+        url = "https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD"
+        response = requests.get(url)
+        data = response.json()
+        bid_price = float(data[0]["spreadProfilePrices"][0]["bid"])
+        ask_price = float(data[0]["spreadProfilePrices"][0]["ask"])
+        price_now = (bid_price + ask_price) / 2
+        return price_now
+    except Exception as e:
+        return None
+    
 def ราคาทอง():
     try:
-        # ดึงราคาทอง Spot
-        ทอง = yf.Ticker("GC=F")
-        data = ทอง.history(period="3d", interval="1h")
-        if data.empty or data["Close"].isnull().all():
-            return "❌ ไม่สามารถดึงข้อมูลราคาทองคำได้ในขณะนี้"
+        # ดึงราคาทอง Spot จาก Swissquote
+        ราคาต่อUSD = get_gold_spot_price()
+        if not ราคาต่อUSD:
+            return "❌ ไม่สามารถดึงข้อมูลราคาทองคำ Spot ได้ในขณะนี้"
 
-        ราคาต่อUSD = data["Close"].dropna().iloc[-1]
 
         # ดึงค่าเงินบาท
         บาท = yf.Ticker("THB=X")
@@ -1228,3 +1244,4 @@ st.sidebar.markdown(
 
 if __name__ == "__main__":
     main()
+    
