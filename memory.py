@@ -2,7 +2,7 @@ from docx import Document
 
 def get_prompt():
     """
-    Reads system prompt from M1.docx for backup Memory.
+    อ่านpromptจาก M1.docx แล้วนำค่ากลับมาใช้วนระบบกับผู้ใช้
     """
     try:
         doc = Document("M1.docx")
