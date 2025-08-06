@@ -2,7 +2,7 @@ from docx import Document
 
 def get_prompt():
     """
-    Reads system prompt from M1.docx and returns it as a string.
+    Reads system prompt from M1.docx for Memory.
     """
     try:
         doc = Document("M1.docx")
