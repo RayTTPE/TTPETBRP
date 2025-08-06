@@ -898,6 +898,34 @@ def GDT():
 
     return f"{WD}ที่ {D} {M} พ.ศ. {year}"
 
+def get_gold_related_news():
+    gold_keywords = [
+        "ทอง", "ราคาทอง", "เงินเฟ้อ", "ดอกเบี้ย", "เฟด", "FED", "เศรษฐกิจ", "ดอลลาร์",
+        "ทองคำ", "ธนาคารกลาง", "เงิน", "ทองคำแท่ง", "ภาวะเศรษฐกิจ", "เงินเฟ้อ", "เงินฝืด"
+    ]
+
+    all_feeds = [
+        "https://www.ryt9.com/stock/rss.xml",
+        "https://www.ryt9.com/economy/rss.xml",
+        "https://www.ryt9.com/politics-latest/rss.xml",
+        "https://www.ryt9.com/sports/rss.xml",
+        "https://www.ryt9.com/general/rss.xml",
+        "https://www.ryt9.com/technology/rss.xml",
+        "https://www.ryt9.com/motor/rss.xml",
+        "https://www.ryt9.com/travel/rss.xml"
+    ]
+
+    gold_news = []
+
+    for url in all_feeds:
+        feed = feedparser.parse(url)
+        for entry in feed.entries[:10]:
+            content = entry.title + " " + (entry.summary if "summary" in entry else "")
+            if any(kw.lower() in content.lower() for kw in gold_keywords):
+                gold_news.append(f"- {entry.title.strip()} ({entry.link})")
+
+    return "\n".join(gold_news[:5]) if gold_news else "ไม่มีข่าวเกี่ยวกับราคาทองคำล่าสุดที่ตรวจพบ"
+
 def create_prompt(messages):
     """
     สร้าง prompt ความจำของระบบจากประวัติการสนทนาของไบร์ทกับผู้สร้าง เล้ง
@@ -908,9 +936,11 @@ def create_prompt(messages):
     ทอง = ราคาทอง()
     วันเวลา = GDT()
     Bitcoin = ราคาบิทคอย()
+    ข่าวทอง = get_gold_related_news()
 
     prompt += f"📅 วันที่ปัจจุบัน: {วันเวลา}\n\n"
     prompt += f"📰 ข้อมูลข่าวล่าสุด:\n{ข่าว}\n\n"
+    prompt += f"🪙 ข่าวที่เกี่ยวกับราคาทองคำ:\n{ข่าวทอง}\n\n"
     prompt += f"ราคาทองล่าสุด:\n{ทอง}\n\n"
     prompt += f"ราคาบิทคอยล่าสุด:\n{Bitcoin}\n\n"
 
