@@ -2,7 +2,7 @@ from docx import Document
 
 def get_prompt():
     """
-    Reads system prompt from M1.docx for Memory.
+    Reads system prompt from M1.docx for backup Memory.
     """
     try:
         doc = Document("M1.docx")
@@ -10,3 +10,4 @@ def get_prompt():
         return prompt
     except Exception as e:
         return f"Error reading M1.docx: {e}"
+
